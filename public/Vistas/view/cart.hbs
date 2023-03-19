@@ -1,0 +1,25 @@
+
+<div>
+    <h2> PAGINA CARRITO </h2>
+    <div>
+        <h3> FORMULARIO COMPRA PRODUCTOS: </h3>
+        <hr>
+        <form action="/api/carrito/compra" method="post">
+            <input type="checkbox" name="carrito[]" value="aceite">Aceite
+            <input type="checkbox" name="carrito[]" value="fideos">Fideos
+            <input type="checkbox" name="carrito[]" value="azucar">Azucar
+            <input type="checkbox" name="carrito[]" value="arroz">Arroz
+            <input type="checkbox" name="carrito[]" value="sal">Sal
+            <input type="checkbox" name="carrito[]" value="harina">Harina
+            <hr>
+            <button class="btn btn-info" type="submit">Comprar</button>
+        </form>
+    </div>
+    <div>
+        <button class="btn btn-primary" onclick="location.href='/api/randoms/'">Ir a pagina de Nros randoms</button>
+
+        <button class="btn btn-secondary" onclick="location.href='/api/info/'">Ir a pagina de informacion</button>
+    </div>
+</div>
+
+
