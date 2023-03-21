@@ -1,4 +1,3 @@
-
 <div>
     <h2 class="titulo">Tabla de Productos</h2>
     <table class="tablaProductos">
@@ -9,35 +8,41 @@
             <th>Código</th>
             <th>Descripción</th>
             <th>Stock</th>
+            <th>Cantidad</th>
         </tr>
         {{#if productos.length}}
-            {{#each productos}}
-                <tr>
-                    <td>{{this.titulo}}</td>
-                    <td>$ {{this.precio}}</td>
-                    <td><img height="60px" width="60px" src={{this.imagen}}/></td>
-                    <td>{{this.code}}</td>
-                    <td>{{this.description}}</td>
-                    <td>{{this.stock}}</td>
-                </tr>
-            {{/each}}
+        {{#each productos}}
+        <tr>
+            <td>{{this.titulo}}</td>
+            <td>$ {{this.precio}}</td>
+            <td><img height="60px" width="60px" src={{this.imagen}} /></td>
+            <td>{{this.code}}</td>
+            <td>{{this.description}}</td>
+            <td>{{this.stock}}</td>
+            <td>{{this.cantidad}}</td>
+        </tr>
+        {{/each}}
         {{/if}}
         {{#unless productos}}
-            <h3 class="titulo">No se encontro ningun producto!!</h3>
+        <h3 class="titulo">No se encontro ningun producto!!</h3>
         {{/unless}}
     </table>
 </div>
 
 
 <style>
-    table, th, td {
+    table,
+    th,
+    td {
         border: 0.5px solid;
     }
+
     .titulo {
         text-align: center;
     }
+
     .nuevoProducto {
-        display: flex ;
+        display: flex;
         align-items: center;
         justify-content: center;
     }

@@ -18,13 +18,13 @@ ruta.get('/', (solicitud, respuesta) => {
     respuesta.render("view/servidor", { fecha: FECHA, pid: PID, puerto: PUERTO, ttl: TTL });
 })
 
-ruta.get('/maxSegurity/env-dev', (solicitud, respuesta) => {
+ruta.get('/ultraSegurity/env-dev', (solicitud, respuesta) => {
     const datosDEV = ENV_DEV_UTILS;
 
     respuesta.render("view/info.env-dev", { datosDEV });
 })
 
-ruta.get('/maxSegurity/env-prod', (solicitud, respuesta) => {
+ruta.get('/ultraSegurity/env-prod', (solicitud, respuesta) => {
     const datosPROD = ENV_PROD_UTILS;
 
     respuesta.render("view/info.env-prod", { datosPROD });

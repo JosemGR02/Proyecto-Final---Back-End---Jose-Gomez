@@ -34,7 +34,7 @@ class ControladorProductos {
 
             respuesta.status(200).send(producto);
         } catch (error) {
-            respuesta.render("view/error-forAll", { infoError: error, lugarError: 'PRODUCTOS' });
+            respuesta.render("view/error-forAll", { infoError: error, lugarError: 'PRODUCTOS' })
             logger.info(`${error}, Error al obtener el producto solicitado`)
         }
     };
@@ -81,7 +81,7 @@ class ControladorProductos {
             logger.info(`${error}, Error al craer el producto solicitado`)
             await LOGGER_UTILS.guardarLOG(error);
         }
-    };
+    }; n
 
     eliminarProdXid = async (solicitud, respuesta) => {
         try {

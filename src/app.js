@@ -46,7 +46,7 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + 'public'));
 app.use(express.static(__dirname + 'uploads'));
 
 // Passport
@@ -59,7 +59,7 @@ app.engine("hbs", handlebars.engine({ extname: ".hbs", defaultLayout: "main.hbs"
 
 app.set('view engine', 'hbs')
 app.set('views', './public/Vistas');
-// app.set('views', __dirname + "/Vistas");
+
 
 // Yargs
 const yargs = _yargs(hideBin(process.argv));
@@ -124,8 +124,6 @@ if (process.env.MODO_CLUSTER == true) {  // args.modo == 'CLUSTER'
 } else {
     logger.info('Ejecucion en Modo Fork')
     logger.warn(`Prueba implementada, xd`)
-    // let fork = false
-    // if (!fork) logger.error(`erororor`)
 
     // Servidor
     app.listen(PUERTO, async () => {
@@ -140,5 +138,4 @@ if (process.env.MODO_CLUSTER == true) {  // args.modo == 'CLUSTER'
     app.on("error", (error) => logger.error(`Error en servidor ${error}`));
 }
 
-// export default app;
 export { app };

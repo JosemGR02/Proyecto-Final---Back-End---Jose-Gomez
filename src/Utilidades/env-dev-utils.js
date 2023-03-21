@@ -15,7 +15,7 @@ const msjGmailNombre = 'Rubie Conroy'
 const msjGmailEmail = 'rubie.conroy@ethereal.email'
 const msjGmailContra = '8MrZq22VsPzTzfdxaJ'
 const msjGmailPuerto = config.EMAIL.PUERTO
-const msjGmailHost = smtp.ethereal.email
+const msjGmailHost = 'smtp.ethereal.email'
 
 const msjWhatsNServicio = config.WHATS_SMS.NRO_TWILIO
 const msjWhatsNroAdmin = config.WHATS_SMS.NRO_ADMIN

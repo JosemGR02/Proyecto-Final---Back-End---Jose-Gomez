@@ -17,21 +17,12 @@
                 <li>Direccion: {{usuario.direccion}}</li>
                 <li>Contraseña: {{usuario.contrasena}}</li>
             </ul>
-            <div>
-                <h4>Productos del carrito:</h4>
-                {{!-- {{carrito}} --}}
-                <ul>
-                    {{#each carrito}}
-                    <li>{{this}}</li>
-                    {{/each}}
-                </ul>
-            </div>
         </div>
         <br>
         <div>
             <button class="btn btn-danger" onclick="location.href='/api/autenticacion/logout'">Cerrar Sesion</button>
             <br>
-            <button class="btn btn-secondary" onclick="location.href='/api/carrito/compra'">
+            <button class="btn btn-secondary" onclick="location.href='/api/carrito/'">
                 Ir a pagina de Carrito
             </button>
             <br>

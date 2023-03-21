@@ -12,7 +12,7 @@ const contenedorProds = document.getElementById('contenedorProductos')
 const contenedorChat = document.getElementById('contenedorMensajes')
 const contenedorXcentaje = document.getElementById('contenedorCompresion')
 
-
+// document.getElementById("myText").defaultValue = "Goofy";
 
 // RENDERS
 
@@ -108,53 +108,3 @@ socket.on('porcentaje compresion', xcentaje => {
 })
 
 
-
-// formulario login
-
-// const loginForm = document.getElementById("loginForm");
-
-// const login = async (e) => {
-//   e.preventDefault();
-
-//   const data = new FormData(loginForm);
-
-//   const credentials = {};
-
-//   for (const field of data) {
-//     credentials[field[0]] = field[1];
-//   }
-
-//   const response = await fetch("/api/auth", {
-//     body: JSON.stringify(credentials),
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     method: "POST",
-//     // redirect: true,
-//   });
-
-//   if (response.status === 200) {
-//     return window.location.replace("/");
-//   }
-
-//   alert("Contraseña Incorrecta");
-// };
-
-// // try catch recomendado
-
-// loginForm.addEventListener("submit", login);
-
-
-
-// loguot
-
-
-// const logout = async () => {
-//     await fetch("/api/auth/logout", { method: "POST" });
-
-//     window.location.replace("/login");
-// };
-
-// const logoutBtn = document.getElementById("logoutBtn");
-
-// logoutBtn.onclick = logout;

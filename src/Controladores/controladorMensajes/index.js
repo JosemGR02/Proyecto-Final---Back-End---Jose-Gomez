@@ -3,6 +3,8 @@
 
 import { ApiMensajes } from "../../Api/index.js";
 import { FECHA_UTILS, ERRORES_UTILS, LOGGER_UTILS } from "../../Utilidades/index.js";
+import { logger } from '../../Configuracion/logger.js';
+
 
 
 class ControladorMensajes {

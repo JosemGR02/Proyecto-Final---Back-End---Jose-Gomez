@@ -9,14 +9,14 @@ const puertoProd = 8082
 const clusterProd = true
 const baseDatos = config.DATABASES.mongodb.dbName
 const urlbaseDatos = config.DATABASES.mongodb.url
-const loggerWinston = config.process.env.LOGGER_MODO
-const ttlSesion = config.process.env.TTL_SESION
+const loggerWinston = process.env.LOGGER_MODO
+const ttlSesion = process.env.TTL_SESION
 
 const msjGmailNombre = 'jose gomez'
 const msjGmailEmail = 'josemgomez40534@gmail.com'
 const msjGmailContra = 'lpkqxgwrlapzorxp'
 const msjGmailPuerto = config.EMAIL.PUERTO
-const msjGmailHost = smtp.gmail.com
+const msjGmailHost = 'smtp.gmail.com'
 
 const msjWhatsNServicio = config.WHATS_SMS.NRO_TWILIO
 const msjWhatsNroAdmin = config.WHATS_SMS.NRO_ADMIN
