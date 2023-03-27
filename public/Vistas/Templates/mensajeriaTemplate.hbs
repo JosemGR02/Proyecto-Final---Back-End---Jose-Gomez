@@ -1,24 +1,47 @@
 <div class="Mensajeria">
     <div id="contenedorMensajes">
-        {{!-- {{#if mensajes.length}}
-        {{#each mensajes}} --}}
+
+        {{!-- {{#if datosDesnormalizados.length}}
+        {{#each datosDesnormalizados}} --}}
+
+        {{#if mensajes.length}}
+
+        {{#each autor}}
+        <p>{{ this.autor.usuario }}</p>
+        <p>{{ this.autor.alias }}</p>
+        <p>{{ this.autor.avatar }}</p>
+        <img src="{{this.autor.avatar}}">
+        {{/each}}
+
+        <p>{{ this.tipo }}</p>
+        <p>{{ this.timestamp }}</p>
+
+        {{#if texto.length}}
+        <p>{{ this.texto }}</p>
+        {{/if}}
+    </div>
+
+    <div id="contenedorCompresion">
+        {{#if comprencionTotal.length}}
+        <p>% {{ comprencionTotal }}</p>
+        {{/if}}
+    </div>
+</div>
+
+
+{{!--
+<div class="Mensajeria">
+    <div id="contenedorMensajes">
+
         {{#if datosDesnormalizados.length}}
         {{#each datosDesnormalizados}}
 
-        {{!-- <p>{{ this.msj.emailForm }}</p>
-        <p>{{ this.msj.tipo }}</p>
-        <p>{{ this.msj.msjForm }}</p>
-        <p>{{ this.createDate }}</p> --}}
-
-        {{#if autor.length}}
-        {{#each autor}}
-        <p>{{ this.msj.idForm }}</p>
-        <p>{{ this.msj.nombreForm }}</p>
-        <p>{{ this.msj.apellidoForm }}</p>
-        <p>{{ this.msj.edadForm }}</p>
-        <p>{{ this.msj.aliasForm }}</p>
-        <p>{{ this.msj.avatarForm }}</p>
-        <p>{{ this.msj.tipo }}</p>
+        {{#if mensajes.length}}
+        {{#each mensajes}}
+        <p>{{ this.usuario }}</p>
+        <p>{{ this.alias }}</p>
+        <p>{{ this.avatar }}</p>
+        <p>{{ this.tipo }}</p>
         {{#if texto.length}}
         <p>{{ this.msj.msjForm }}</p>
         <p>{{ this.createDate }}</p>
@@ -32,8 +55,7 @@
         {{/if}}
     </div>
 </div>
-
-
+--}}
 
 
 <style>
@@ -47,3 +69,29 @@
         justify-content: center;
     }
 </style>
+
+
+
+
+
+{{!--
+{{#if autor.length}}
+{{#each autor}}
+<p>{{ this.msj.idForm }}</p>
+<p>{{ this.msj.nombreForm }}</p>
+{{!-- <p>{{ this.msj.apellidoForm }}</p>
+<p>{{ this.msj.edadForm }}</p>
+<p>{{ this.msj.aliasForm }}</p>
+<p>{{ this.msj.avatarForm }}</p>
+<p>{{ this.msj.tipo }}</p>
+{{#if texto.length}}
+<p>{{ this.msj.msjForm }}</p>
+<p>{{ this.createDate }}</p>
+{{/each}}
+{{/if}}
+--}}
+
+{{!-- <p>{{ this.msj.emailForm }}</p>
+<p>{{ this.msj.tipo }}</p>
+<p>{{ this.msj.msjForm }}</p>
+<p>{{ this.createDate }}</p> --}}

@@ -3,6 +3,7 @@
 
 import { Router } from "express";
 import { ControladorCarritos } from '../../Controladores/index.js';
+import { ApiCarritos } from '../../Api/index.js';
 
 const ruta = Router();
 
@@ -14,17 +15,17 @@ class RutaCarrito {
     }
 
     start() {
-        ruta.get("/compra", (solicitud, respuesta) => { respuesta.render("view/cart"); });
-
-        ruta.get('/:id', this.controladorCarts.obtenerCarritoXid);
-        ruta.get('/:id/productos', this.controladorCarts.obtenerTodosProdsCarrito);
+        //? pagina carrito
+        ruta.get('/:_id', this.controladorCarts.obtenerCarritoXid);
+        ruta.get('/:_id/productos/', this.controladorCarts.obtenerTodosProdsCarrito);
 
         ruta.post('/', this.controladorCarts.crearCarrito);
-        // ruta.put('/:id/productos/:id', this.controladorCarts.actualizarProdsCarrito);
-        ruta.post('/compra', this.controladorCarts.procesarPedidoCarrito);
+        ruta.post("/:_id", this.controladorCarts.guardarProdsCarrito);
+        ruta.post('/compra/:_id', this.controladorCarts.procesarPedidoCarrito);
 
-        ruta.delete('/:id/productos/:id', this.controladorCarts.eliminarProdCarrito);
-        ruta.delete('/', this.controladorCarts.eliminarCarritoXid);
+        ruta.delete('/_:id', this.controladorCarts.eliminarCarritoXid);
+        ruta.delete('/:_id/productos/', this.controladorCarts.eliminarProdCarrito);
+        ruta.delete('/:_id/productos/vaciar', this.controladorCarts.vaciarCarrito);
 
         return ruta
     }
@@ -33,4 +34,4 @@ class RutaCarrito {
 export { RutaCarrito };
 
 
-
+// ruta.get("/", (solicitud, respuesta) => { respuesta.render("view/cart") });

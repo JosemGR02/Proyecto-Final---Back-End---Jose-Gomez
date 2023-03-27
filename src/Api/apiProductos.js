@@ -16,12 +16,17 @@ class ApiProductos {
         return elementos.map(elemento => new ValidacionJoiProducto(ProductosDTO(elemento)))
     }
 
+    async obtenerProductosXcategoria() {
+        const elementos = await this.DaoProductos.obtener()
+        return elementos.map(elemento => new ValidacionJoiProducto(ProductosDTO(elemento)))
+    }
+
     async obtenerProductosXid(idBuscado) {
-        const elemento = await this.DaoProductos.obtener(idBuscado)
+        const elemento = await this.DaoProductos.obtenerXid(idBuscado)
         return new ValidacionJoiProducto(ProductosDTO(elemento))
     }
 
-    async obtenerProductoUno(elemento) {
+    async obtenerUnProducto(elemento) {
         const respuesta = await this.DaoProductos.obtenerUno(elemento);
         return new ValidacionJoiProducto(ProductosDTO(respuesta));
     }

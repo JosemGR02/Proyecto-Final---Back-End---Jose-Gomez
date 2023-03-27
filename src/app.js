@@ -1,35 +1,37 @@
 
 import express from 'express';
-import handlebars from 'express-handlebars';
+import mongoose from "mongoose";
+import MongoStore from 'connect-mongo';
+import _yargs from 'yargs';
 import cookieParser from "cookie-parser";
 import session from 'express-session';
-import MongoStore from 'connect-mongo';
-import mongoose from "mongoose";
-import __dirname from "./dirname.js";
 import passport from "passport";
+import __dirname from "./dirname.js";
 import cluster from 'cluster';
-import _yargs from 'yargs';
-import { hideBin } from 'yargs/helpers';
-import { INFO_UTILS } from './Utilidades/index.js';
-import { PassportAutenticacion } from './Servicios/index.js';
+import handlebars from 'express-handlebars';
 import { config } from './Configuracion/config.js';
 import { logger } from './Configuracion/logger.js';
+import { Server as ServidorHttp } from "http";
+import { Server as ServidorIO } from "socket.io";
+import { PassportAutenticacion, eventosSocketIO } from './Servicios/index.js';
+import { hideBin } from 'yargs/helpers';
+import { INFO_UTILS } from './Utilidades/index.js';
 import { RutAutenticacion, RutaServidor, RutaProducto, RutaCarrito, RutaMensaje } from "./Rutas/index.js";
 import { RutaInexistente } from './Middlewares/index.js';
 
-
 const app = express();
 
+
+//? Sesion Mongo
 const mongOptiones = { useNewUrlParser: true, useUnifiedTopology: true }
 
-// Sesion Mongo
 app.use(
     session({
         store: MongoStore.create({
             mongoUrl: process.env.BASEDATOS_MONGO_URL,
             dbName: process.env.BASEDATOS_MONGO_NOMBRE,
             mongOptiones,
-            ttl: 600,   //process.env.TTL_SESION
+            ttl: process.env.TTL_SESION,
             collectionName: 'sesionesMC',
             autoRemove: 'native'
         }),
@@ -49,19 +51,24 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + 'public'));
 app.use(express.static(__dirname + 'uploads'));
 
-// Passport
+
+//? Cors si modo Env == Desarrollo
+if (config.SERVER.NODE_ENV == 'Desarrollo') app.use(cors())
+
+
+//? Passport
 PassportAutenticacion.iniciar()
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Motor de plantilla
-app.engine("hbs", handlebars.engine({ extname: ".hbs", defaultLayout: "main.hbs" }));
 
+//? Motor de plantilla
+app.engine("hbs", handlebars.engine({ extname: ".hbs", defaultLayout: "main.hbs" }));
 app.set('view engine', 'hbs')
 app.set('views', './public/Vistas');
 
 
-// Yargs
+//? Yargs
 const yargs = _yargs(hideBin(process.argv));
 const args = yargs
     .default({
@@ -78,14 +85,19 @@ export const PUERTO = config.SERVER.PUERTO || args.puerto
 
 // const LOGGER = args.logger || DEV
 
+//? IO
+const servidorHttp = new ServidorHttp(app);
+const io = new ServidorIO(servidorHttp);
+eventosSocketIO(io)
 
-// Instancias de las rutas
+
+//? Instancias de las rutas
 const RutaAutenticacion = new RutAutenticacion();
 const RutaCarritos = new RutaCarrito();
 const RutaProductos = new RutaProducto();
 const RutaMensajeria = new RutaMensaje();
 
-// Rutas 
+//? Rutas del proyecto
 app.use('/api/', RutaServidor);
 app.use('/api/autenticacion', RutaAutenticacion.start());
 app.use('/api/carrito', RutaCarritos.start());
@@ -94,7 +106,7 @@ app.use('/api/chat', RutaMensajeria.start());
 app.use('/api/*', RutaInexistente);
 
 
-// Modo de ejecucion 
+//? Modo de ejecucion 
 if (process.env.MODO_CLUSTER == true) {  // args.modo == 'CLUSTER' 
     if (cluster.isPrimary) {
         logger.info('Ejecucion en Modo Cluster')
@@ -109,8 +121,8 @@ if (process.env.MODO_CLUSTER == true) {  // args.modo == 'CLUSTER'
             cluster.fork();
         });
     } else {
-        // Servidor
-        app.listen(PUERTO, async () => {
+        //? Servidor
+        servidorHttp.listen(PUERTO, async () => {
             logger.info(`Servidor escuchando en el puerto: ${PUERTO}, Trabajador iniciado con el id: ${process.pid}`);
             try {
                 await mongoose.connect(process.env.BASEDATOS_MONGO_URL, mongOptiones);
@@ -119,14 +131,14 @@ if (process.env.MODO_CLUSTER == true) {  // args.modo == 'CLUSTER'
                 logger.error(`Error en conexión de Base de datos: ${error}`);
             }
         })
-        app.on("error", (error) => logger.error(`Error en servidor ${error}`));
+        servidorHttp.on("error", (error) => logger.error(`Error en servidor ${error}`));
     }
 } else {
     logger.info('Ejecucion en Modo Fork')
     logger.warn(`Prueba implementada, xd`)
 
-    // Servidor
-    app.listen(PUERTO, async () => {
+    //? Servidor
+    servidorHttp.listen(PUERTO, async () => {
         logger.info(`Servidor escuchando en el puerto: ${PUERTO}, Trabajador iniciado con el id: ${process.pid}`);
         try {
             await mongoose.connect(process.env.BASEDATOS_MONGO_URL, mongOptiones);
@@ -135,7 +147,7 @@ if (process.env.MODO_CLUSTER == true) {  // args.modo == 'CLUSTER'
             logger.error(`Error en conexión de Base de datos: ${error}`);
         }
     })
-    app.on("error", (error) => logger.error(`Error en servidor ${error}`));
+    servidorHttp.on("error", (error) => logger.error(`Error en servidor ${error}`));
 }
 
 export { app };

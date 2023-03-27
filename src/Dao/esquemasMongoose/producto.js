@@ -10,7 +10,7 @@ class ContenedorMongodbProducto extends ContenedorMongoBD {
     constructor() {
         super({
             nombre: modeloProducto.ColeccionProductos,
-            schema: modeloProducto.ProductoEsquema,
+            schema: modeloProducto.EsquemaProducto,
         });
     }
 }

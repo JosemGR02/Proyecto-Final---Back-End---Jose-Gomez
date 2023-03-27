@@ -8,25 +8,34 @@ class ContenedorMongoBD extends ContenedorBase {
 
     constructor(basedatos, coleccion) {
         super(async () => {
-            logger.info('Conectando a la Base de datos MongoBD...')
+            try {
+                logger.info('Conectando a la Base de datos MongoBD...')
 
-            const conexion = await MongoClient.connect('mongodb://localhost', {
-                useNewUrlParser: true,
-                useUnifiedTopology: true
-            });
-            const baseDatosMongo = conexion.db(basedatos);
-            this._coleccion = baseDatosMongo.collection(coleccion);
+                const conexion = await MongoClient.connect('mongodb://localhost', {
+                    useNewUrlParser: true,
+                    useUnifiedTopology: true
+                });
+                const baseDatosMongo = conexion.db(basedatos);
+                this._coleccion = baseDatosMongo.collection(coleccion);
 
-            logger.info('La conexión con MongoBD fue establecida con exito')
+                logger.info('La conexión con MongoBD fue establecida con exito')
+            } catch (error) {
+                logger.error('Error al establecer conexión con MongoBD')
+            }
         })
     }
 
-    obtener = async id => {
+    obtenerTodos = async elemento => {
         try {
-            if (id) {
-                console.log(id)
-                const respuesta = await this._collection.findOne({ id: ObjectId(id) })
-                return [respuesta]
+            // if (id) {
+            //     console.log(id)
+            //     const respuesta = await this._collection.findOne({ id: ObjectId(id) })
+            //     return [respuesta]
+            // }
+            if (elemento) {
+                console.log(elemento)
+                const elementos = await this._collection.find({ categoria: elemento }).toArray()
+                return elementos
             }
             else {
                 const respuesta = await this._collection.find({}).toArray()
@@ -38,13 +47,23 @@ class ContenedorMongoBD extends ContenedorBase {
         }
     }
 
-    obtenerUno = async opciones => {
+    obtenerXid = async id => {
         try {
-            const respuesta = await this._coleccion.findOne(opciones).lean().exec();
+            const respuesta = await this._collection.findOne({ id: ObjectId(id) })
+            return [respuesta]
+        }
+        catch (error) {
+            logger.error(`${error}, Error al obtener el elemento seleccionado`);
+        }
+    }
+
+    obtenerUno = async elemento => {
+        try {
+            const respuesta = await this._coleccion.findOne(elemento).lean().exec();
             return respuesta
         }
         catch (error) {
-            logger.error(`${error}, Error al obtener un elemento seleccionado`);
+            logger.error(`${error}, Error al obtener el elemento seleccionado`);
         }
     }
 

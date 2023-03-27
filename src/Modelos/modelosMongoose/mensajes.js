@@ -5,22 +5,21 @@ import { Schema } from "mongoose";
 
 const ColeccionMensajes = "mensajes";
 
-const EsquemaMensajes = new Schema(
+const EsquemaMensaje = new Schema(
     {
+        id: Schema.Types.ObjectId,
         autor: {
-            id: Schema.Types.ObjectId,
-            nombre: { type: String, required: true, max: 40 },
-            apellido: { type: String, required: true, max: 40 },
-            edad: { type: Number, required: true, max: 3 },
+            usuario: { type: String, required: true }, // antes: nombre
             alias: { type: String, required: true, max: 30 },
             avatar: { type: String, required: true, max: 150 },
             tipo: { type: String, required: true }
         },
-        texto: [{ type: Schema.Types.ObjectId, ref: 'mensajes' }]
+        texto: [{ type: Schema.Types.ObjectId, ref: 'mensajes' }],
+        timestamp: { type: Date, default: Date.now },
     }
 );
 
-EsquemaMensajes.set("toJSON", {
+EsquemaMensaje.set("toJSON", {
     transform: (_, respuesta) => {
         respuesta.id = respuesta._id;
         delete respuesta.__v;
@@ -30,5 +29,8 @@ EsquemaMensajes.set("toJSON", {
 });
 
 
-export const modeloMensajes = { EsquemaMensajes, ColeccionMensajes };
+export const modeloMensajes = { EsquemaMensaje, ColeccionMensajes };
 
+
+            // apellido: { type: String, required: true, max: 40 },
+            // edad: { type: Number, required: true, max: 3 },

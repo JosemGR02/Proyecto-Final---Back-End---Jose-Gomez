@@ -10,7 +10,7 @@ class ContenedorMongodbMensaje extends ContenedorMongoBD {
     constructor() {
         super({
             nombre: modeloMensajes.ColeccionMensajes,
-            schema: modeloMensajes.EsquemaMensajes,
+            schema: modeloMensajes.EsquemaMensaje,
         });
     }
 }

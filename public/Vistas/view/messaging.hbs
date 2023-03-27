@@ -1,0 +1,35 @@
+<div>
+    <h2> PAGINA CHAT WEBSOCKET </h2>
+    <div>
+        <div class="Mensajeria">
+            <div id="tituloChat">
+                <h3 class="titulo">Ingrese un nuevo mensaje</h3>
+            </div>
+            <br>
+            <div class="contenedor-msjs" id="contenedorMensajes"></div>
+            <br>
+            <form action="/api/chat/" method="post" id="formularioMensajes">
+                <div class="input-group">
+                    <input type="text" id="chatText" name="mensaje" autocomplete="off" autofocus
+                        placeholder="Escribe un nuevo mensaje" required />
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-warning" id="msj_input">Enviar</button>
+                    </div>
+                </div>
+            </form>
+            {{!-- <h3 class="titulo">Comprension de mensajes: </h3>
+            <div class="Mensajeria" id="contenedorCompresion"></div> --}}
+            <br>
+            <div class="buscarMsjsxEmail">
+                <h3 class="titulo">Buscar mis mensajes por email:</h3>
+                <br>
+                <div class="contenedor-msjs" id="MisMensajesEmail"></div>
+                <br>
+                <form action="/api/chat/:email" method="delete" id="formActualizarProds">
+                    <input type="email" name="usuario" placeholder="Ingrese su email" required>
+                    <button type="submit" id="nuevoProd_input">Buscar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

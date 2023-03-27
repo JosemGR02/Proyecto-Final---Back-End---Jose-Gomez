@@ -10,7 +10,7 @@ class ContenedorMongodbUsuario extends ContenedorMongoBD {
     constructor() {
         super({
             nombre: modeloUsuario.ColeccionUsuarios,
-            schema: modeloUsuario.esquemaUsuario,
+            schema: modeloUsuario.EsquemaUsuario,
         });
     }
 }

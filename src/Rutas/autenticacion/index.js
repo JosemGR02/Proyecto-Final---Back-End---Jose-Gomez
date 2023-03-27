@@ -17,23 +17,22 @@ class RutAutenticacion {
     }
 
     start() {
-        // Home
+        //? Home
         ruta.get("/", estaAutenticado, (solicitud, respuesta) => {
             respuesta.render("view/login");
         });
 
-        // Inicio Sesion
+        //? Inicio Sesion
         ruta.get("/login", estaAutenticado, (solicitud, respuesta) => {
             respuesta.render("view/login");
         });
 
-        ruta.post("/login", passport.authenticate("login", { failureRedirect: "/api/autenticacion/error-login" }),
-            (solicitud, respuesta) => {
-                respuesta.redirect("/api/autenticacion");
-            }
-        );
+        ruta.post("/login", passport.authenticate("login", {
+            successRedirect: "/api/autenticacion",
+            failureRedirect: "/api/autenticacion/error-login"
+        }));
 
-        // Registrarse
+        //? Registrarse
         ruta.get("/signup", estaAutenticado, (solicitud, respuesta) => {
             respuesta.render("view/signup");
         });
@@ -43,10 +42,10 @@ class RutAutenticacion {
             failureRedirect: "/api/autenticacion/error-signup"
         }));
 
-        // Cerrar Sesion
+        //? Cerrar Sesion
         ruta.get("/logout", this.controladorAuth.desloguearse);
 
-        // Rutas Errores
+        //? Rutas Errores
         ruta.get("/error-login", (solicitud, respuesta) => {
             logger.error("Error en login")
             respuesta.render("view/error-login", {});
@@ -62,9 +61,3 @@ class RutAutenticacion {
 }
 
 export { RutAutenticacion };
-
-
-
-
-
-

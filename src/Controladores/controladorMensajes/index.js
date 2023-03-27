@@ -1,6 +1,7 @@
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~| Controlador Mensajes |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
+import swal from 'sweetalert';
 import { ApiMensajes } from "../../Api/index.js";
 import { FECHA_UTILS, ERRORES_UTILS, LOGGER_UTILS } from "../../Utilidades/index.js";
 import { logger } from '../../Configuracion/logger.js';
@@ -20,11 +21,11 @@ class ControladorMensajes {
             if (!mensajes) {
                 return respuesta.send({ error: ERRORES_UTILS.MESSAGES.ERROR_MENSAJES });
             }
-            respuesta.send(mensajes);
-
+            // respuesta.send(mensajes);
+            respuesta.render("view/messaging", { todosMsjs: mensajes });
         } catch (error) {
             respuesta.render("view/error-forAll", { infoError: error, lugarError: 'MENSAJES' });
-            logger.info(`${error}, Error al obtener los mensajes solicitados`)
+            logger.error(`${error}, Error al obtener los mensajes solicitados`)
         }
     };
 
@@ -40,10 +41,9 @@ class ControladorMensajes {
             const mensajeCreado = await this.apiMsjs.guardarMensajesBD(nuevoMensaje);
 
             respuesta.send({ success: true, mensaje: mensajeCreado });
-
         } catch (error) {
             respuesta.render("view/error-forAll", { infoError: error, lugarError: 'MENSAJES' });
-            logger.info(`${error}, Error al crear el mensaje solicitado`)
+            logger.error(`${error}, Error al crear el mensaje solicitado`)
             await LOGGER_UTILS.addLog(error);
         }
     };
@@ -52,18 +52,49 @@ class ControladorMensajes {
         try {
             const { email } = solicitud.params;
 
-            const misMensajes = await this.apiMsjs.obtenerTodosMensajes(email);
+            const mensajes = await this.apiMsjs.obtenerMensajesXemail(email);
 
-            if (!misMensajes) {
+            if (!mensajes) {
                 return respuesta.send({ error: ERRORES_UTILS.MESSAGES.ERROR_MENSAJES });
             }
-            respuesta.send(misMensajes);
-
+            // respuesta.send(mensajes);
+            respuesta.render("view/messaging", { misMensajes: mensajes });
         } catch (error) {
             respuesta.render("view/error-forAll", { infoError: error, lugarError: 'MENSAJES' });
-            logger.info(`${error}, Error al obtener los mensajes solicitados`)
+            logger.error(`${error}, Error al obtener los mensajes solicitados`)
         }
     };
+
+    vaciarChat = async (solicitud, respuesta) => {
+        try {
+            //* Se obtiene el chat
+            const chatMensajes = await this.apiMsjs.obtenerTodosMensajes();
+
+            if (!chatMensajes)
+                return logger.error('El chat de mensajeria no fue encontrado')
+
+            logger.info({ Chat: chatMensajes })
+
+            const chatEliminado = await this.apiMsjs.eliminarTodosMensajes();
+
+            logger.info({ Chat: chatMensajes })
+
+            //* Alerta a usuario
+            if (chatEliminado) {
+                swal({
+                    title: 'El chat de la mensajeria fue vaciado con exito',
+                    icon: 'success',
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }
+            respuesta.send({ success: true, mensaje: "El chat de mensajes fue vaciado" });
+        } catch (error) {
+            respuesta.render("view/error-forAll", { infoError: error, lugarError: 'CARRITOS' });
+            logger.error(`${error}, Error al vaciar el carrito de productos`)
+        }
+    }
 }
 
 export { ControladorMensajes };

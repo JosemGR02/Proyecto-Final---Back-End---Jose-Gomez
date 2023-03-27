@@ -11,14 +11,14 @@ class ApiCarritos {
         this.DaoCarritos = DaoFactoryCarts.obtenerDao(config.SERVER.SELECCION_BASEdDATOS);
     }
 
-    async obtenerTodosCarritos() {
-        const elementos = await this.DaoCarritos.obtener();
-        return elementos.map(elemento => new ValidacionJoiCarrito(CarritosDTO(elemento)))
+    async obtenerCarritoXid(idBuscado) {
+        const elemento = await this.DaoCarritos.obtenerXid(idBuscado);
+        return new ValidacionJoiCarrito(CarritosDTO(elemento))
     }
 
-    async obtenerCarritoXid(idBuscado) {
-        const elemento = await this.DaoCarritos.obtener(idBuscado);
-        return new ValidacionJoiCarrito(CarritosDTO(elemento))
+    async craerCarritoBD(nuevoElemento) {
+        ApiCarritos.ValidarDatosCarritos(nuevoElemento, true)
+        await this.DaoCarritos.guardar(CarritosDTO(nuevoElemento))
     }
 
     async actualizarProductosXid(idBuscado, datos) {
@@ -27,18 +27,9 @@ class ApiCarritos {
         return new ValidacionJoiCarrito(actualizado)
     }
 
-    async guardarCarritoBD(nuevoElemento) {
-        ApiCarritos.ValidarDatosCarritos(nuevoElemento, true)
-        await this.DaoCarritos.guardar(CarritosDTO(nuevoElemento))
-    }
-
     async eliminarCarritoXid(idBuscado) {
         const eliminado = await this.DaoCarritos.eliminar(idBuscado);
         return eliminado
-    }
-
-    async eliminarTodosCarritos() {
-        await this.DaoCarritos.eliminar();
     }
 
     static ValidarDatosCarritos(carrito, requerido) {

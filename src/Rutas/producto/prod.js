@@ -13,7 +13,7 @@ class RutaProducto {
     start() {
         ruta.get("/", this.controladorProds.obtenerTodosProds);
         ruta.get("/:id", this.controladorProds.obtenerProdXid);
-        // ruta.get("/:categoria", this.controladorProds.obtenerProdsXcategoria);
+        ruta.get("/:categoria", this.controladorProds.obtenerProdsXcategoria);
 
         ruta.post("/", this.controladorProds.crearProducto);
         ruta.put("/:id", this.controladorProds.actualizarProducto);

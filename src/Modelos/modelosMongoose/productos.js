@@ -5,17 +5,18 @@ import { Schema } from "mongoose";
 
 const ColeccionProductos = "productos";
 
-const ProductoEsquema = new Schema(
+const EsquemaProducto = new Schema(
     {
+        id: { type: String },  // id: Schema.Types.ObjectId,
         titulo: { type: String, required: true, max: 100 },
         descripcion: { type: String, required: true, max: 150 },
-        codigo: { type: String, required: true, max: 10 },
+        categoria: { type: String, required: true },
         imagen: { type: String, required: true, max: 150 },
         precio: { type: Number, required: true },
+        codigo: { type: String, required: true, max: 10 },
         stock: { type: Number, required: true, default: 1 },
-        cantidad: { type: Number, required: true, default: 1 },
-        categoria: { type: String, required: true },
-        // timestamp: { type: String, required: true, max: 100 },
+        cantidad: { type: Number, default: 1 },
+        enCarrito: { type: Boolean, default: false },
         timestamp: { type: Date, default: Date.now },
     },
     {
@@ -23,7 +24,7 @@ const ProductoEsquema = new Schema(
     }
 );
 
-ProductoEsquema.set("toJSON", {
+EsquemaProducto.set("toJSON", {
     transform: (_, respuesta) => {
         respuesta.id = respuesta._id;
         delete respuesta.__v;
@@ -32,5 +33,7 @@ ProductoEsquema.set("toJSON", {
     },
 });
 
-export const modeloProducto = { ColeccionProductos, ProductoEsquema };
+export const modeloProducto = { EsquemaProducto, ColeccionProductos };
 
+
+// timestamp: { type: String, required: true, max: 100 },

@@ -18,11 +18,11 @@ class ApiMensajes {
     }
 
     async obtenerMensajesXemail(email) {
-        const mensajes = await this.DaoMensajes.obtener(email);
-        return new ValidacionJoiMensaje(MensajesDTO(mensajes))
+        const elementos = await this.DaoMensajes.obtenerTodos(email)
+        return elementos.map(elemento => new ValidacionJoiMensaje(MensajesDTO(elemento)))
     }
 
-    async obtenerMensajesUno(elemento) {
+    async obtenerUnMensaje(elemento) {
         const respuesta = await this.DaoMensajes.obtenerUno(elemento);
         return new ValidacionJoiMensaje(MensajesDTO(respuesta))
     }

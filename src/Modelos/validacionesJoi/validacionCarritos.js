@@ -1,13 +1,14 @@
 
-/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~| Modelos - Carritos |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~| Validaciones - Carritos |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 import Joi from 'joi'
 
 class ValidacionJoiCarrito {
 
-    constructor(productos, usuario) {
+    constructor(productos, usuario, orden) {
         this.productos = productos
         this.usuario = usuario
+        this.orden = orden
     }
 
     equals(cartValidar) {
@@ -20,6 +21,9 @@ class ValidacionJoiCarrito {
         if (this.usuario != cartValidar.usuario) {
             return false
         }
+        if (this.orden != cartValidar.orden) {
+            return false
+        }
         return true
     }
 
@@ -27,6 +31,7 @@ class ValidacionJoiCarrito {
         const CarritoSchema = Joi.object({
             productos: requerido ? Joi.object().required() : Joi.object(),
             usuario: requerido ? Joi.object().required() : Joi.object(),
+            orden: requerido ? Joi.object().required() : Joi.object(),
         })
 
         const { error } = CarritoSchema.validate(carrito)

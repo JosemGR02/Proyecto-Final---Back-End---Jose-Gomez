@@ -1,0 +1,83 @@
+<table class="CarritoCompras">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>Nombre</th>
+            <th>Descripcion</th>
+            <th>Stock</th>
+            <th>Cantidad</th>
+            <th>Precio unitario</th>
+            <th>Precio Total</th>
+        </tr>
+        {{#if productos.length}}
+        {{#each productos}}
+        <tr>
+            <td scope="row">{{this.id}}</td>
+            <td><img height="60px" width="60px" src={{this.thumbnail}} /> {{this.title}}</td>
+            <td>{{this.description}}</td>
+            <td>{{this.price}}</td>
+            <td>{{this.stock}}</td>
+            <td>{{this.cantidad}}
+                <button class="btn btn-danger btn-sm" class="boton disminuir"> - </button>
+                <span id="contador" min="0" pattern="^[0-9]+"> 0 </span>
+                <button class="btn btn-info btn-sm" class="boton aumentar"> + </button>
+            </td>
+            {{!-- <td>{{this.precioTotal}}</td> --}}
+        </tr>
+        {{/each}}
+        {{/if}}
+        {{#unless productos}}
+        <h2> ¡Carrito vacio! - Agrega productos desde la pagina de productos </h2>
+        {{/unless}}
+    </thead>
+</table>
+
+<style>
+    table,
+    th,
+    td {
+        border: 0.5px solid;
+    }
+
+    .titulo {
+        text-align: center;
+    }
+
+    .listaProds {
+        width: 100%;
+    }
+</style>
+
+{{!-- <div>
+    <h1 class="titulo">Carrito: </h1>
+
+    <table class="listaProds">
+        <tr>
+            <th>Nombre</th>
+            <th>id</th>
+            <th>Descripcion</th>
+            <th>Stock</th>
+            <th>Cantidad</th>
+            <th>Precio unitario</th>
+            <th>Precio Total</th>
+        </tr>
+        {{#if productos.length}}
+        {{#each productos}}
+        <tr>
+            <td><img height="60px" width="60px" src={{this.thumbnail}} /></td>
+            <td>{{this.title}}</td>
+            <td>{{this.id}}</td>
+            <td>{{this.description}}</td>
+            <td>{{this.stock}}</td>
+            <td>{{this.cantidad}}</td>
+            <td>{{this.price}}</td>
+            <td>{{this.precioTotal}}</td>
+        </tr>
+        {{/each}}
+        {{/if}}
+        {{#unless productos}}
+        <h1>¡No tenes productos en el carrito!</h1>
+        <h4>Podes elegir los productos de tu compra, yendo a la pagina de productos</h4>
+        {{/unless}}
+    </table>
+</div> --}}

@@ -1,23 +1,165 @@
 <div>
     <h2> PAGINA CARRITO </h2>
     <div>
-        <div>Mi Carrito: </div>
-        <button>agregar producto al carrito</button>
-        <button>eliminar producto el carrito</button>
-        <button>eliminar todos los productos del carrito</button>
+        <h1>Mi Carrito: </h1>
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">id</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Descripcion</th>
+                    <th scope="col">Stock</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Precio unitario</th>
+                    <th scope="col">Precio Total</th>
+                </tr>
+            </thead>
+            <tbody class="productosEnCarrito"></tbody>
+            <tfoot>
+                <tr id="footer-carrito">
+                    <th scope="row" colspan="5">¡Carrito vacio! - Agrega productos desde la pagina de productos</th>
+                </tr>
+            </tfoot>
+        </table>
+
+        <template id="template-footer">
+            <th scope="row" colspan="2">Total de productos</th>
+            <td>10</td>
+            <td>
+                <button class="btn btn-danger btn-sm" id="vaciar-carrito">Vaciar carrito</button>
+            </td>
+            <td class="font-weight-bold">$<span>5000</span></td>
+        </template>
+
+        {{!-- <button action="/api/carrito/{{carritoID}}}/productos/{{prodID}}" method="put"> Enviar </button> --}}
+
+        {{!-- <div>
+            <button class="boton disminuir"> - </button>
+            <span id="contador" min="0" pattern="^[0-9]+"> 0 </span>
+            <button class="boton aumentar"> + </button>
+        </div> --}}
+
+        //!!!
+        {{!-- <div class="actualizarProdCarrito">
+            <h3 class="titulo">Seleccione la cantidad de productos a comprar:</h3>
+            <br>
+            <form action="/api/carrito/:id/productos/:id" method="put" id="formActualizarProds">
+                <input type="Number" name="cantidad" required>
+                <button type="submit" id="nuevoProd_input"> Enviar </button>
+            </form>
+        </div> --}}
+
+        <br>
         <div>
-            <h4>Productos del carrito:</h4>
-            {{!-- {{carrito}} --}}
-            <ul>
-                {{#each carrito}}
-                <li>{{this}}</li>
-                {{/each}}
-            </ul>
+            <div class="obtenerTodosProdCarrito">
+                <h3 class="titulo">Obtener todos los productos del carrito:</h3>
+                <br>
+                <form action="/api/carrito/:id/productos/:id" method="post" id="formActualizarProds">
+                    <input type="text" name="id" placeholder="Id del carrito" class="nuevoProd_input" />
+                    <button type="submit" id="nuevoProd_input"> Obtener </button>
+                </form>
+            </div>
+            <br>
+            <div class="guardarProd/sCarrito">
+                <h3 class="titulo">Guardar un producto en el carrito:</h3>
+                <br>
+                <form action="/api/carrito/:id" method="get" id="formActualizarProds">
+                    <input type="text" name="id" placeholder="Id del producto" class="nuevoProd_input" />
+                    <button type="submit" id="nuevoProd_input"> Guardar </button>
+                </form>
+            </div>
+            <br>
+            <div class="eliminarProd/sCarrito">
+                <h3 class="titulo">Eliminar uno/todos los productos del carrito:</h3>
+                <br>
+                <form action="/api/carrito/:id/productos/" method="delete" id="formActualizarProds">
+                    <h5>Input Id opcional</h5>
+                    <input type="text" name="id" placeholder="Id del producto" class="nuevoProd_input" />
+                    <button type="submit" id="nuevoProd_input"> Eliminar </button>
+                </form>
+            </div>
+            <br>
+            <div class="procesoPedidoCompra">
+                <h3 class="titulo">Procesar pedido de compra:</h3>
+                <br>
+                <form action="/api/carrito/compra/:id" method="post" id="formActualizarProds">
+                    <input type="text" name="id" placeholder="Id del carrito" class="nuevoProd_input" />
+                    <button type="submit" id="nuevoProd_input"> Comprar carrito </button>
+                </form>
+            </div>
         </div>
     </div>
     <div>
-        <button class="btn btn-primary" onclick="location.href='/api/randoms/'">Ir a pagina de Nros randoms</button>
-
-        <button class="btn btn-secondary" onclick="location.href='/api/info/'">Ir a pagina de informacion</button>
+        <br>
+        <button class="btn btn-secondary" onclick="location.href='/api/carrito/compra/{{carritoID}}'">
+            Procesar pedido de compra
+        </button>
     </div>
 </div>
+
+
+
+
+
+{{!-- <div>
+    <h2> PAGINA CARRITO </h2>
+    <div>
+        <div>
+            <h1>Mi Carrito: </h1>
+            <ul>
+                {{#if datosCarrito}}
+                <li>{{datosCarrito}}</li>
+                {{!-- {{#each datosCarrito}}
+                <li>{{this}}</li>
+                {{/each}}
+                {{/if}}
+            </ul>
+        </div>
+        <div>
+            <h1>listado de los productos del carrito: </h1>
+            <ul>
+                {{#if todosProductos}}
+                {{#each todosProductos}}
+                <li>{{this}}</li>
+                {{/each}}
+                {{/if}}
+            </ul>
+        </div>
+        <button>agregar producto al carrito</button> ir ruta guardarprodCart
+        <button>eliminar producto el carrito</button> ir ruta eliminarprodCarritoXid
+        <button>eliminar todos los productos del carrito</button> ir ruta eliminartodoscarrito
+        <button>obtener solo productos del carrito</button> ir ruta obtenertodosprodscarrito
+        <br>
+        <div>
+            <h3 class="titulo">Productos disponibles:</h3>
+            <div class="nuevoProducto" id="contenedorProductos"></div>
+        </div>
+        <br>
+        <div>
+            <h3 class="titulo">Buscar un producto por su categoria:</h3>
+            <button class="btn btn-secondary" onclick="location.href='/api/productos/:categoria'">
+                Guardar un producto al carrito
+            </button>
+            <div class="productoCategoria" id="contenedorProdsCategoria">
+                <ul>
+                    {{#if prodXcategoria}}
+                    {{#each prodXcategoria}}
+                    <li>{{this}}</li>
+                    {{/each}}
+                    {{/if}}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div>
+        {{!-- (id productos x body) --}}
+        <button class="btn btn-secondary" onclick="location.href='/api/carrito/${carritoID}'">
+            Guardar un producto al carrito
+        </button>
+        <br>
+        <button class="btn btn-secondary" onclick="location.href='/api/carrito/compra/{{carritoID}}'">
+            Procesar pedido de compra
+        </button>
+    </div>
+</div>
+--}}

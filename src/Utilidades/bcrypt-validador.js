@@ -1,5 +1,8 @@
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~| Validador Bcrypt |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
 import bcrypt from 'bcryptjs';
+
 
 const crearContraHash = contraseña => bcrypt.hashSync(contraseña, bcrypt.genSaltSync(10), null)
 

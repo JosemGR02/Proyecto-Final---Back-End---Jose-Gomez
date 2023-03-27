@@ -24,6 +24,7 @@ const msjWhatsTokenAuth = config.WHATS_SMS.TOKEN_AUTHN
 
 
 export const ENV_DEV_UTILS = {
+    // modoNodeENV,
     puertoDev,
     clusterDev,
     baseDatos,
@@ -39,3 +40,25 @@ export const ENV_DEV_UTILS = {
     msjWhatsIdCuenta,
     msjWhatsTokenAuth
 }
+
+
+// modoNodeENV = process.env.NODE_ENV
+// const puerto = 8080
+// const cluster = false
+
+
+// process.env.PORT
+// process.env.MODO_CLUSTER
+// process.env.TTL_SESION
+// process.env.LOGGER_MODO
+// process.env.BASEDATOS_SELECCIONADA
+// process.env.BASEDATOS_MONGO_URL
+// process.env.MSJ_GMAIL_NOMBRE
+// process.env.MSJ_GMAIL_EMAIL
+// process.env.MSJ_GMAIL_CONTRA
+// process.env.MSJ_GMAIL_PUERTO
+// process.env.MSJ_GMAIL_HOST
+// process.env.MSJ_WHATS_SMS_NRO_SERVICIO
+// process.env.MSJ_WHATS_SMS_NRO_ADMIN
+// process.env.MSJ_WHATS_SMS_ID_CUENTA
+// process.env.MSJ_WHATS_SMS_TOKEN_AUTENTICACION

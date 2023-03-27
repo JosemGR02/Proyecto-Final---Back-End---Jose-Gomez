@@ -23,7 +23,7 @@ class ControladorAutenticacion {
             });
         } catch (error) {
             respuesta.render("view/error-forAll", { infoError: error, lugarError: 'USUARIOS' });
-            logger.info(`${error}, Error en el logout`);
+            logger.error(`${error}, Error en el logout`);
         }
     }
 }

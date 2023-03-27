@@ -2,8 +2,12 @@
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~| Configuracion del Proyecto |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 import dotenv from "dotenv";
+import path from 'path';
 
-dotenv.config()
+dotenv.config({
+    path: path.resolve(process.cwd(), process.env.NODE_ENV + '.env')
+    // path: path.resolve(process.cwd(),'.env' + process.env.NODE_ENV) //!!!
+});
 
 const PRODUCTOS_ARCHIVONOMBRE = "productos";
 const CARRITOS_ARCHIVONOMBRE = "carritos";
@@ -13,6 +17,7 @@ const USUARIOS_ARCHIVONOMBRE = "usuarios";
 
 const config = {
     SERVER: {
+        NODE_ENV: process.env.NODE_ENV || 'Desarrollo',
         PUERTO: process.env.PORT || 8080,
         SELECCION_BASEdDATOS: process.env.BASEDATOS_SELECCIONADA ?? "memory",
     },
@@ -44,40 +49,3 @@ const config = {
 };
 
 export { config };
-
-
-
-
-//! Ver clase 41
-
-// // config.js
-// import dotenv from 'dotenv';
-// import path from 'path';
-
-// dotenv.config({
-//     path: path.resolve(process.cwd(), process.env.NODE_ENV + '.env')
-// });
-
-// export default {
-//     NODE_ENV: process.env.NODE_ENV || 'development',
-//     HOST: process.env.HOST || 'localhost',
-//     PORT: process.env.PORT || 8080,
-//     //MEM - FILE - MONGO
-//     TIPO_PERSISTENCIA: process.env.TIPO_PERSISTENCIA || 'MEM'
-// }
-
-
-// app
-
-// import cors from 'cors'
-// if (config.NODE_ENV == 'development') app.use(cors())
-
-
-// // production.env
-// NODE_ENV=production
-// HOST=localhost
-// PORT=9000
-// //MEM - FILE - MONGO
-// TIPO_PERSISTENCIA=MONGO
-
-

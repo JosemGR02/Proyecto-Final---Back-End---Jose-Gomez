@@ -1,0 +1,30 @@
+<div>
+    <h2> PAGINA PRODUCTOS </h2>
+    <div>
+        <div>
+            <h3 class="titulo">Productos disponibles:</h3>
+            <div class="nuevoProducto" id="contenedorProductos"></div>
+        </div>
+    </div>
+    <br>
+    <div>
+        <div class="buscarProducto/s">
+            <h3 class="titulo">Buscar uno/todos el/los producto/s:</h3>
+            <br>
+            <form action="/api/productos/" method="get" id="formActualizarProds">
+                <h5>Input Id opcional</h5>
+                <input type="text" name="id" placeholder="Id del producto" class="nuevoProd_input" />
+                <button type="submit" id="nuevoProd_input"> Buscar </button>
+            </form>
+        </div>
+        <br>
+        <div class="buscarProdsxCategoria">
+            <h3 class="titulo">Buscar un producto por su categoria:</h3>
+            <br>
+            <form action="/api/productos/:categoria" method="get" id="formActualizarProds">
+                <input type="text" name="categoria" placeholder="Ingrese la categoria a buscar" required>
+                <button type="submit" id="nuevoProd_input"> Buscar </button>
+            </form>
+        </div>
+    </div>
+</div>

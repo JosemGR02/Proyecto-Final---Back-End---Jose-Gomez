@@ -18,13 +18,14 @@ class ApiUsuarios {
     }
 
     async obtenerUsuariosXid(idBuscado) {
-        const elemento = await this.DaoUsuarios.obtener(idBuscado)
+        const elemento = await this.DaoUsuarios.obtenerXid(idBuscado)
         return new ValidacionJoiUsuario(UsuariosDTO(elemento))
     }
 
     async obtenerUnUsuario(elemento) {
         const respuesta = await this.DaoUsuarios.obtenerUno(elemento)
-        return new ValidacionJoiUsuario(UsuariosDTO(respuesta))
+        const usuario = new ValidacionJoiUsuario(UsuariosDTO(respuesta))
+        return usuario
     }
 
     async guardarUsuariosBD(nuevoElemento) {

@@ -1,5 +1,4 @@
 
-
 //* USANDO CLIENTE AXIOS PARA LAS CONSULTAS Y RESPUESTAS DE PRODUCTOS
 
 
@@ -15,10 +14,10 @@ const obtenerTodosProductos = async () => {
         const todosProductos = await ClienteAxios.obtenerTodosAxios()
 
         if (todosProductos.data) {
-            logger.log(todosProductos.data);
+            logger.info(todosProductos.data);
         }
     } catch (error) {
-        logger.log(error);
+        logger.error(error);
     }
 }
 obtenerTodosProductos()
@@ -34,10 +33,10 @@ const obtenerXidProductos = async () => {
         const productoBuscado = await ClienteAxios.obtenerXidAxios(1)
 
         if (productoBuscado.data) {
-            logger.log(productoBuscado.data);
+            logger.info(productoBuscado.data);
         }
     } catch {
-        logger.log(error);
+        logger.error(error);
     }
 }
 obtenerXidProductos()
@@ -54,12 +53,11 @@ const guardarProductos = async () => {
 
         logger.log(producto.data);
     } catch {
-        logger.log(error);
+        logger.error(error);
     }
 }
 guardarProductos()
 
-// guardarProductos() //guardar otro
 
 
 logger.info('-----------------------------')
@@ -73,7 +71,7 @@ const actualizarProductos = async () => {
 
         logger.log(actualizado.data);
     } catch {
-        logger.log(error);
+        logger.error(error);
     }
 }
 actualizarProductos()
@@ -92,7 +90,7 @@ const eliminarXidProductos = async () => {
 
         logger.info(respuesta.data)
     } catch {
-        logger.log(error);
+        logger.error(error);
     }
 }
 eliminarXidProductos()
@@ -109,7 +107,7 @@ const eliminarTodosProductos = async () => {
 
         await ClienteAxios.eliminarTodosAxios()
     } catch {
-        logger.log(error);
+        logger.error(error);
     }
 }
 eliminarTodosProductos()

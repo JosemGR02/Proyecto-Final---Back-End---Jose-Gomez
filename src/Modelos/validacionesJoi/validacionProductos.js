@@ -1,17 +1,18 @@
 
-/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~| Modelos - Productos |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~| Validaciones - Productos |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 import Joi from 'joi'
 
 class ValidacionJoiProducto {
 
-    constructor(titulo, descripcion, codigo, imagen, precio, stock) {
+    constructor(titulo, descripcion, timestamp, codigo, imagen, precio, stock) {
         this.titulo = titulo
         this.descripcion = descripcion
         this.codigo = codigo
         this.imagen = imagen
         this.precio = precio
         this.stock = stock
+        this.timestamp = timestamp
     }
 
     equals(prodValidar) {
@@ -36,20 +37,24 @@ class ValidacionJoiProducto {
         if (this.stock != prodValidar.stock) {
             return false
         }
+        if (this.timestamp != prodValidar.timestamp) {
+            return false
+        }
         return true
     }
 
     static validar(producto, requerido) {
-        const MensajeSchema = Joi.object({
-            titulo: requerido ? Joi.string().required().length(20) : Joi.string(),
-            descripcion: requerido ? Joi.string().required().length(30) : Joi.string(),
-            codigo: requerido ? Joi.string().required().max(20) : Joi.string(),
+        const productoSchema = Joi.object({
+            titulo: requerido ? Joi.string().required() : Joi.string(),
+            descripcion: requerido ? Joi.string().required() : Joi.string(),
+            codigo: requerido ? Joi.string().required() : Joi.string(),
             imagen: requerido ? Joi.string().required() : Joi.string(),
-            precio: requerido ? Joi.number().required().max(20) : Joi.number(),
-            stock: requerido ? Joi.number().required().max(20) : Joi.number(),
+            precio: requerido ? Joi.number().required() : Joi.number(),
+            stock: requerido ? Joi.number().required() : Joi.number(),
+            timestamp: requerido ? Joi.string().required() : Joi.string(),
         })
 
-        const { error } = MensajeSchema.validate(producto)
+        const { error } = productoSchema.validate(producto)
         if (error) {
             throw error
         }
