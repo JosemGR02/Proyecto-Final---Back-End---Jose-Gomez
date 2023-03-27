@@ -5,6 +5,6 @@
 
 /node_modules
 /help
-/.env.Produccion
-/.env.Desarrollo
+.env.Produccion
+.env.Desarrollo
 
