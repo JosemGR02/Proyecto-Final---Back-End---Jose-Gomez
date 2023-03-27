@@ -2,6 +2,7 @@
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~| Ruta Autenticacion |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 import passport from "passport";
+import chalk from "chalk";
 import { Router } from "express";
 import { logger } from '../../Configuracion/logger.js';
 import { estaAutenticado } from "../../Middlewares/index.js";
@@ -47,12 +48,12 @@ class RutAutenticacion {
 
         //? Rutas Errores
         ruta.get("/error-login", (solicitud, respuesta) => {
-            logger.error("Error en login")
+            logger.error(chalk.inverse.red("Error en login"))
             respuesta.render("view/error-login", {});
         });
 
         ruta.get("/error-signup", (solicitud, respuesta) => {
-            logger.error("Error en signup")
+            logger.error(chalk.inverse.red("Error en signup"));
             respuesta.render("view/error-signup", {});
         });
 

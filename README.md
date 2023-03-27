@@ -1,4 +1,4 @@
-# Proyecto Final - Curso Back End - Jose Gomez
+# Proyecto Final - Curso Backend - Jose Gomez
 
 ## Tienda online de zapatillas
 

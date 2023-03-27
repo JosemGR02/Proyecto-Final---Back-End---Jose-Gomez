@@ -93,7 +93,9 @@ export const eventosSocketIO = (io) => {
 
             if (msjRespuesta.substr(0, 5) === 'Res@ ') {
                 msjRespuesta = msjRespuesta.substr(5);
+
                 const espacio = msjRespuesta.indexOf(' ');
+
                 if (espacio !== -1) {
                     const nombre = msjRespuesta.substring(0, espacio);
                     const mensaje = msjRespuesta.substring(espacio + 1);

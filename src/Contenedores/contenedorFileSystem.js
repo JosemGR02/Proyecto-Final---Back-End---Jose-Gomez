@@ -2,6 +2,7 @@
 import fs from 'fs';
 import { logger } from '../Configuracion/logger.js';
 import { ContenedorBase } from './contenedorBase.js';
+import chalk from 'chalk';
 
 
 class ContenedorFileSystem extends ContenedorBase {
@@ -13,31 +14,19 @@ class ContenedorFileSystem extends ContenedorBase {
             try {
                 await fs.promises.readFile(this.archivoFile, 'utf-8')
                 this.#listo = true
-                logger.info('Iniciando el contenedor en Filesystem')
+                logger.info(chalk.inverse.green('Iniciando con Filesystem'));
             } catch (error) {
                 await fs.promises.writeFile(this.archivoFile, '[]')
                 this.#listo = true
-                logger.info('Iniciando el contenedor en Filesystem')
+                logger.info(chalk.inverse.red('Error al iniciar con Filesystem'));
             }
         })
         this.archivoFile = archivoFile
         this.elementos = [];
     }
 
-    // async iniciar() {
-    //     try {
-    //         await fs.promises.readFile(this.archivoFile, 'utf-8')
-    //         this.#listo = true
-    //         logger.info('Iniciando el contenedor en Filesystem')
-    //     } catch (error) {
-    //         await fs.promises.writeFile(this.archivoFile, '[]')
-    //         this.#listo = true
-    //         logger.info('Iniciando el contenedor en Filesystem')
-    //     }
-    // }
-
     desconectar() {
-        logger.info('el contenedor en Filesystem ha sido desconectado')
+        logger.info(chalk.inverse.yellow('Filesystem ha sido desconectado'))
     }
 
     #chequearListo() {

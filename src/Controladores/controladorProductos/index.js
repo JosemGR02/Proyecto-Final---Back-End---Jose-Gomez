@@ -18,13 +18,13 @@ class ControladorProductos {
             const productos = await this.apiProds.obtenerTodosProductos();
 
             //* Se obtienen todos los productos
-            if (!productos) return logger.error({ error: ERRORES_UTILS.MESSAGES.ERROR_PRODUCTO });
+            if (!productos) return logger.error(chalk.bord.red({ error: ERRORES_UTILS.MESSAGES.ERROR_PRODUCTO }));
 
             // respuesta.send(producto);
             respuesta.render("view/prods", { todosProductos: productos });
         } catch (error) {
             respuesta.render("view/error-forAll", { infoError: error, lugarError: 'PRODUCTOS' });
-            logger.error(`${error}, Error al obtener los productos solicitados`)
+            logger.error(chalk.bord.red(`${error}, Error al obtener los productos solicitados`));
         }
     };
 
@@ -41,7 +41,7 @@ class ControladorProductos {
 
         } catch (error) {
             respuesta.render("view/error-forAll", { infoError: error, lugarError: 'PRODUCTOS' })
-            logger.error(`${error}, Error al obtener el producto solicitado`)
+            logger.error(chalk.bord.red(`${error}, Error al obtener el producto solicitado`));
         }
     };
 
@@ -57,7 +57,7 @@ class ControladorProductos {
 
         } catch (error) {
             respuesta.render("view/error-forAll", { infoError: error, lugarError: 'PRODUCTOS' })
-            logger.error(`${error}, Error al obtener el producto solicitado`)
+            logger.error(chalk.bord.red(`${error}, Error al obtener el producto solicitado`));
         }
     };
 
@@ -72,18 +72,18 @@ class ControladorProductos {
             const productoValidado = await JOI_VALIDADOR.productoJoi.validateAsync({
                 titulo, descripcion, codigo, imagen, precio, stock, timestamp: FECHA_UTILS.getTimestamp(),
             });
-            logger.info({ productoValidado })
+            logger.info(chalk.bord.blue({ productoValidado }));
 
             //* Actualizacion del producto
             const productoActualizado = await this.apiProds.actualizarProductosXid({ id, productoValidado })
 
-            logger.info({ productoActualizado })
+            logger.info(chalk.bord.magenta({ productoActualizado }));
 
             respuesta.send(`${productoActualizado}, Producto actualizado con exito`)
 
         } catch (error) {
             respuesta.render("view/error-forAll", { infoError: error, lugarError: 'PRODUCTOS' });
-            logger.error(`${error}, Error al actualizar el producto solicitado`)
+            logger.error(chalk.bord.red(`${error}, Error al actualizar el producto solicitado`));
         }
     }
 
@@ -97,7 +97,7 @@ class ControladorProductos {
             //* Subida de imagen del producto
             const file = solicitud.file;
 
-            logger.info({ status: 'imagen subida correctamente!', link: __dirname + '/public/Uploads/productos' + file.filename });
+            logger.info(chalk.bord.cyan({ status: 'imagen subida correctamente!', link: __dirname + '/public/Uploads/productos' + file.filename }));
 
             const imagen = file.filename;
 
@@ -106,7 +106,7 @@ class ControladorProductos {
                 titulo, descripcion, codigo, imagen, precio, stock,
                 timestamp: FECHA_UTILS.getTimestamp(),
             });
-            logger.info({ nuevoProducto })
+            logger.info(chalk.bord.green({ nuevoProducto }))
 
             //* Creacion del producto
             const productoCreado = await this.apiProds.guardarProductosBD(nuevoProducto);
@@ -115,7 +115,7 @@ class ControladorProductos {
 
         } catch (error) {
             respuesta.render("view/error-forAll", { infoError: error, lugarError: 'PRODUCTOS' });
-            logger.error(`${error}, Error al crear el producto solicitado`)
+            logger.error(chalk.bord.red(`${error}, Error al crear el producto solicitado`));
             await LOGGER_UTILS.guardarLOG(error);
         }
     };
@@ -131,7 +131,7 @@ class ControladorProductos {
             respuesta.send({ success: true, eliminado: productoEliminado });
         } catch (error) {
             respuesta.render("view/error-forAll", { infoError: error, lugarError: 'PRODUCTOS' });
-            logger.error(`${error}, Error al eliminar el producto solicitado`)
+            logger.error(chalk.bord.red(`${error}, Error al eliminar el producto solicitado`));
         }
     };
 
@@ -144,7 +144,7 @@ class ControladorProductos {
             respuesta.send({ success: true, mensaje: 'Productos eliminados con exito' });
         } catch (error) {
             respuesta.render("view/error-forAll", { infoError: error, lugarError: 'PRODUCTOS' });
-            logger.error(`${error}, Error al eliminar los productos solicitados`)
+            logger.error(chalk.bord.red(`${error}, Error al eliminar los productos solicitados`));
         }
     };
 }

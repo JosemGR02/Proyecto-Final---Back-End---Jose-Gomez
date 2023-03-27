@@ -20,7 +20,7 @@ class ContenedorMemoria extends ContenedorBase {
             }
         }
         catch (error) {
-            logger.error(`${error}, Error al obtener un/os elemento/s`);
+            logger.error(chalk.bord.red(`${error}, Error al obtener un/os elemento/s`));
 
             return []
         }
@@ -34,7 +34,7 @@ class ContenedorMemoria extends ContenedorBase {
             return elementoGuardado
         }
         catch (error) {
-            logger.error(`${error}, Error al guardar un elemento`);
+            logger.error(chalk.bord.red(`${error}, Error al guardar un elemento`));
 
             let elemento = {}
             return elemento
@@ -57,7 +57,7 @@ class ContenedorMemoria extends ContenedorBase {
             return elementoActualizado
         }
         catch (error) {
-            logger.error(`${error}, Error al acualizar un elemento`);
+            logger.error(chalk.bord.red(`${error}, Error al acualizar un elemento`));
 
             let elemento = {}
             return elemento
@@ -76,7 +76,7 @@ class ContenedorMemoria extends ContenedorBase {
             }
         }
         catch (error) {
-            logger.error(`${error}, Error al eliminar un/os elemento/s`);
+            logger.error(chalk.bord.red(`${error}, Error al eliminar un/os elemento/s`));
 
             let elemento = {}
             return elemento

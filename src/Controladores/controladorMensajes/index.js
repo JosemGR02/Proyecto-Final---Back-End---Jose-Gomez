@@ -2,6 +2,7 @@
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~| Controlador Mensajes |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 import swal from 'sweetalert';
+import chalk from 'chalk';
 import { ApiMensajes } from "../../Api/index.js";
 import { FECHA_UTILS, ERRORES_UTILS, LOGGER_UTILS } from "../../Utilidades/index.js";
 import { logger } from '../../Configuracion/logger.js';
@@ -25,7 +26,7 @@ class ControladorMensajes {
             respuesta.render("view/messaging", { todosMsjs: mensajes });
         } catch (error) {
             respuesta.render("view/error-forAll", { infoError: error, lugarError: 'MENSAJES' });
-            logger.error(`${error}, Error al obtener los mensajes solicitados`)
+            logger.error(chalk.bord.red(`${error}, Error al obtener los mensajes solicitados`));
         }
     };
 
@@ -43,7 +44,7 @@ class ControladorMensajes {
             respuesta.send({ success: true, mensaje: mensajeCreado });
         } catch (error) {
             respuesta.render("view/error-forAll", { infoError: error, lugarError: 'MENSAJES' });
-            logger.error(`${error}, Error al crear el mensaje solicitado`)
+            logger.error(chalk.bord.red(`${error}, Error al crear el mensaje solicitado`));
             await LOGGER_UTILS.addLog(error);
         }
     };
@@ -61,7 +62,7 @@ class ControladorMensajes {
             respuesta.render("view/messaging", { misMensajes: mensajes });
         } catch (error) {
             respuesta.render("view/error-forAll", { infoError: error, lugarError: 'MENSAJES' });
-            logger.error(`${error}, Error al obtener los mensajes solicitados`)
+            logger.error(chalk.bord.red(`${error}, Error al obtener los mensajes solicitados`));
         }
     };
 
@@ -71,13 +72,13 @@ class ControladorMensajes {
             const chatMensajes = await this.apiMsjs.obtenerTodosMensajes();
 
             if (!chatMensajes)
-                return logger.error('El chat de mensajeria no fue encontrado')
+                return logger.error(chalk.bord.red('El chat de mensajeria no fue encontrado'));
 
-            logger.info({ Chat: chatMensajes })
+            logger.info(chalk.bord.blue({ Chat: chatMensajes }));
 
             const chatEliminado = await this.apiMsjs.eliminarTodosMensajes();
 
-            logger.info({ Chat: chatMensajes })
+            logger.info(chalk.bord.magenta({ Chat: chatMensajes }));
 
             //* Alerta a usuario
             if (chatEliminado) {
@@ -92,7 +93,7 @@ class ControladorMensajes {
             respuesta.send({ success: true, mensaje: "El chat de mensajes fue vaciado" });
         } catch (error) {
             respuesta.render("view/error-forAll", { infoError: error, lugarError: 'CARRITOS' });
-            logger.error(`${error}, Error al vaciar el carrito de productos`)
+            logger.error(chalk.bord.red(`${error}, Error al vaciar el carrito de productos`))
         }
     }
 }

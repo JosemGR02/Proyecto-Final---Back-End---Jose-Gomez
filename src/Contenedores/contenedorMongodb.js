@@ -1,15 +1,17 @@
 
-import { logger } from '../Configuracion/logger.js';
 import mongodb from 'mongodb';
 const { MongoClient } = mongodb;
+import chalk from 'chalk';
 import { ContenedorBase } from './contenedorBase.js';
+import { logger } from '../Configuracion/logger.js';
+
 
 class ContenedorMongoBD extends ContenedorBase {
 
     constructor(basedatos, coleccion) {
         super(async () => {
             try {
-                logger.info('Conectando a la Base de datos MongoBD...')
+                logger.info(chalk.inverse.yellow('Conectando a la Base de datos MongoBD...'));
 
                 const conexion = await MongoClient.connect('mongodb://localhost', {
                     useNewUrlParser: true,
@@ -18,22 +20,17 @@ class ContenedorMongoBD extends ContenedorBase {
                 const baseDatosMongo = conexion.db(basedatos);
                 this._coleccion = baseDatosMongo.collection(coleccion);
 
-                logger.info('La conexión con MongoBD fue establecida con exito')
+                logger.info(chalk.inverse.green('La conexión con MongoBD fue establecida con exito'));
             } catch (error) {
-                logger.error('Error al establecer conexión con MongoBD')
+                logger.error(chalk.inverse.red('Error al establecer conexión con MongoBD'));
             }
         })
     }
 
     obtenerTodos = async elemento => {
         try {
-            // if (id) {
-            //     console.log(id)
-            //     const respuesta = await this._collection.findOne({ id: ObjectId(id) })
-            //     return [respuesta]
-            // }
             if (elemento) {
-                console.log(elemento)
+                logger.info(elemento)
                 const elementos = await this._collection.find({ categoria: elemento }).toArray()
                 return elementos
             }
@@ -43,7 +40,7 @@ class ContenedorMongoBD extends ContenedorBase {
             }
         }
         catch (error) {
-            logger.error(`${error}, Error al obtener el/los elemento/s seleccionado/s`);
+            logger.error(chalk.bord.red(`${error}, Error al obtener el/los elemento/s seleccionado/s`));
         }
     }
 
@@ -53,7 +50,7 @@ class ContenedorMongoBD extends ContenedorBase {
             return [respuesta]
         }
         catch (error) {
-            logger.error(`${error}, Error al obtener el elemento seleccionado`);
+            logger.error(chalk.bord.red(`${error}, Error al obtener el elemento seleccionado`));
         }
     }
 
@@ -63,7 +60,7 @@ class ContenedorMongoBD extends ContenedorBase {
             return respuesta
         }
         catch (error) {
-            logger.error(`${error}, Error al obtener el elemento seleccionado`);
+            logger.error(chalk.bord.red(`${error}, Error al obtener el elemento seleccionado`));
         }
     }
 
@@ -73,7 +70,7 @@ class ContenedorMongoBD extends ContenedorBase {
             return elemento
         }
         catch (error) {
-            logger.error(`${error}, Error al guardar un elemento`);
+            logger.error(chalk.bord.red(`${error}, Error al guardar un elemento`));
             return elemento
         }
     }
@@ -84,7 +81,7 @@ class ContenedorMongoBD extends ContenedorBase {
             return elemento
         }
         catch (error) {
-            logger.error(`${error}, Error al actualizar un elemento`);
+            logger.error(chalk.bord.red(`${error}, Error al actualizar un elemento`));
             return elemento
         }
     }
@@ -99,7 +96,7 @@ class ContenedorMongoBD extends ContenedorBase {
             }
         }
         catch (error) {
-            logger.error(`${error}, Error al eliminar un/os elemento/s`);
+            logger.error(chalk.bord.red(`${error}, Error al eliminar un/os elemento/s`));
             return elementoEliminado
         }
     }

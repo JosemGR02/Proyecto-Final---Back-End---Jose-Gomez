@@ -9,7 +9,7 @@ const obtenerTodosAxios = async () => {
     try {
         return await axios.get('[http://localhost:8080/api/productos/]')
     } catch (error) {
-        logger.info(`error: ${error}, Error en Cliente Axios get`)
+        logger.error(chalk.bord.red(`error: ${error}, Error en Cliente Axios get`));
     }
 }
 
@@ -17,7 +17,7 @@ const obtenerXidAxios = async () => {
     try {
         return await axios.get('[http://localhost:8080/api/productos/1]')
     } catch (error) {
-        logger.info(`error: ${error}, Error en Cliente Axios get`)
+        logger.error(chalk.bord.red(`error: ${error}, Error en Cliente Axios get`));
     }
 }
 
@@ -32,7 +32,7 @@ const guardarAxios = async () => {
             stock: 45
         })
     } catch (error) {
-        logger.info(`error: ${error}, Error en Cliente Axios post`)
+        logger.error(chalk.bord.red(`error: ${error}, Error en Cliente Axios post`));
     }
 }
 
@@ -47,7 +47,7 @@ const actualizarAxios = async () => {
             stock: 25
         })
     } catch (error) {
-        logger.info(`error: ${error}, Error en Cliente Axios post`)
+        logger.error(chalk.bord.red(`error: ${error}, Error en Cliente Axios post`));
     }
 }
 
@@ -55,7 +55,7 @@ const eliminarXidAxios = async () => {
     try {
         return await axios.delete('[http://localhost:8080/api/productos/1]')
     } catch (error) {
-        logger.info(`error: ${error}, Error en Cliente Axios delete`)
+        logger.error(chalk.bord.red(`error: ${error}, Error en Cliente Axios delete`));
     }
 }
 
@@ -63,7 +63,7 @@ const eliminarTodosAxios = async () => {
     try {
         return await axios.delete('[http://localhost:8080/api/productos]')
     } catch (error) {
-        logger.info(`error: ${error}, Error en Cliente Axios delete`)
+        logger.error(chalk.bord.red(`error: ${error}, Error en Cliente Axios delete`));
     }
 }
 
