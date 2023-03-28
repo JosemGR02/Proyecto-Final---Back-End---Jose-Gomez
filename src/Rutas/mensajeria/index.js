@@ -12,9 +12,7 @@ class RutaMensaje {
     }
 
     start() {
-        ruta.get("/", (solicitud, respuesta) => {
-            respuesta.render("view/messaging")
-        }, this.controladorMsjs.ObtenerTodosMsjs);
+        ruta.get("/", (solicitud, respuesta) => { respuesta.render("view/messaging") });
 
         ruta.get("/", this.controladorMsjs.ObtenerTodosMsjs);
 

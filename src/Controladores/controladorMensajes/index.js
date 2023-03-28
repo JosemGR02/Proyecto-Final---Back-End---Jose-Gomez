@@ -59,7 +59,7 @@ class ControladorMensajes {
                 return respuesta.send({ error: ERRORES_UTILS.MESSAGES.ERROR_MENSAJES });
             }
             // respuesta.send(mensajes);
-            respuesta.render("view/messaging", { misMensajes: mensajes });
+            respuesta.render("view/myMessages", { misMensajes: mensajes });
         } catch (error) {
             respuesta.render("view/error-forAll", { infoError: error, lugarError: 'MENSAJES' });
             logger.error(chalk.bord.red(`${error}, Error al obtener los mensajes solicitados`));

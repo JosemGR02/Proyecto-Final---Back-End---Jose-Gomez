@@ -4,6 +4,7 @@
 
 // import { datosDesnormalizados, comprencionTotal } from "../Desnormalizacion/index.js";
 import { logger } from '../../src/Configuracion/logger.js';
+import { apiCarritos } from '../../src/Api/index.js';
 
 
 let contador = 0;
@@ -174,3 +175,5 @@ const CarritosRenderizado = async (prodsEnCarrito) => {
 }
 
 //¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬//
+
+

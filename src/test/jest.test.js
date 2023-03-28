@@ -101,13 +101,6 @@ describe('Prueba funcionalidad API REST Productos', () => {
     afterEach(() => {
         logger.info('\n~~~~~~~~~~~~| Final del Test |~~~~~~~~~~~~')
     })
-
-    //! Ver como generar un reporte con los resultados .json (creo que ya se)
-    // afterEach(function () {
-    //     if (existsSync('todos.txt')) {
-    //         unlinkSync('todos.txt')
-    //     }
-    // })
 })
 
 

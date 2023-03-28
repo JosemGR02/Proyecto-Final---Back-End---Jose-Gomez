@@ -22,7 +22,6 @@ let datoCantidadTotal = 0;
 class ControladorCarritos {
     constructor() {
         this.apiCarts = new ApiCarritos()
-        this.apiProds = new ApiProductos()
     }
 
     obtenerCarritoXid = async (solicitud, respuesta) => {

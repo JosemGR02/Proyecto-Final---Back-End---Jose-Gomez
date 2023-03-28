@@ -9,6 +9,7 @@ import passport from "passport";
 import __dirname from "./dirname.js";
 import cluster from 'cluster';
 import handlebars from 'express-handlebars';
+import chalk from 'chalk';
 import { config } from './Configuracion/config.js';
 import { logger } from './Configuracion/logger.js';
 import { Server as ServidorHttp } from "http";
@@ -109,45 +110,43 @@ app.use('/api/*', RutaInexistente);
 //? Modo de ejecucion 
 if (process.env.MODO_CLUSTER == true) {  // args.modo == 'CLUSTER' 
     if (cluster.isPrimary) {
-        logger.info('Ejecucion en Modo Cluster')
-        logger.info(`Primario corriendo con el id: ${process.pid} -- Puerto ${args.puerto}`);
+        logger.info(chalk.inverse.green('Ejecucion en Modo Cluster'));
+        logger.info(chalk.inverse.green(`Primario corriendo con el id: ${process.pid} -- Puerto ${args.puerto}`));
 
         for (let i = 0; i < INFO_UTILS.procesadoresdCpus; i++) {
             cluster.fork();
         }
-
         cluster.on('exit', worker => {
-            logger.info(`El trabajador con el id:${worker.process.pid} ha finalizado.`, new Date().tolocaleString());
+            logger.info(chalk.inverse.yellow(`El trabajador con el id:${worker.process.pid} ha finalizado.`, new Date().tolocaleString()));
             cluster.fork();
         });
     } else {
         //? Servidor
         servidorHttp.listen(PUERTO, async () => {
-            logger.info(`Servidor escuchando en el puerto: ${PUERTO}, Trabajador iniciado con el id: ${process.pid}`);
+            logger.info(chalk.inverse.green(`Servidor escuchando en el puerto: ${PUERTO}, Trabajador iniciado con el id: ${process.pid}`));
             try {
                 await mongoose.connect(process.env.BASEDATOS_MONGO_URL, mongOptiones);
-                logger.info("Conectado a Base de Datos Mongo");
+                logger.info(chalk.inverse.cyan("Conectado a Base de Datos Mongo"));
             } catch (error) {
-                logger.error(`Error en conexión de Base de datos: ${error}`);
+                logger.error(chalk.inverse.red(`Error en conexión de Base de datos: ${error}`));
             }
         })
         servidorHttp.on("error", (error) => logger.error(`Error en servidor ${error}`));
     }
 } else {
-    logger.info('Ejecucion en Modo Fork')
-    logger.warn(`Prueba implementada, xd`)
+    logger.info(chalk.inverse.green('Ejecucion en Modo Fork'))
 
     //? Servidor
     servidorHttp.listen(PUERTO, async () => {
         logger.info(`Servidor escuchando en el puerto: ${PUERTO}, Trabajador iniciado con el id: ${process.pid}`);
         try {
             await mongoose.connect(process.env.BASEDATOS_MONGO_URL, mongOptiones);
-            logger.info("Conectado a Base de Datos Mongo");
+            logger.info(chalk.inverse.cyan("Conectado a Base de Datos Mongo"));
         } catch (error) {
-            logger.error(`Error en conexión de Base de datos: ${error}`);
+            logger.error(chalk.inverse.red(`Error en conexión de Base de datos: ${error}`));
         }
     })
-    servidorHttp.on("error", (error) => logger.error(`Error en servidor ${error}`));
+    servidorHttp.on("error", (error) => logger.error(chalk.inverse.red(`Error en servidor ${error}`)));
 }
 
 export { app };

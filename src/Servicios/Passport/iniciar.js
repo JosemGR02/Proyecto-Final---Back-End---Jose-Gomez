@@ -2,7 +2,6 @@
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~| Servicio Passport |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 import passport from "passport";
-import chalk from "chalk";
 import __dirname from '../../dirname.js';
 import nodemailer from 'nodemailer';
 import { Strategy as LocalStrategy } from "passport-local";
@@ -37,13 +36,13 @@ const iniciar = () => {
             const usuario = await ApiUsuarios.obtenerUnUsuario({ 'usuario': username });
 
             if (!usuario) {
-                logger.warn(chalk.inverse.red("No se encontro el usuario con el usuario " + usuario));
+                logger.warn("No se encontro el usuario con el usuario " + usuario);
                 return done(null, false);
             }
 
             //* Verificacion de contraseña
             if (!BCRYPT_VALIDADOR.validarContraseña(usuario, password)) {
-                logger.warn(chalk.inverse.red({ error: ERRORES_UTILS.MESSAGES.ERROR_USUARIO_O_CONTRA }));
+                logger.warn({ error: ERRORES_UTILS.MESSAGES.ERROR_USUARIO_O_CONTRA });
                 return done(null, false)
             }
 
@@ -69,11 +68,11 @@ const iniciar = () => {
             //* Subida de imagen (avatar usuario)
             const file = solicitud.file;
 
-            logger.info(chalk.bord.cyan({ status: 'imagen subida correctamente!', link: __dirname + '/public/Uploads/usuarios' + file.filename }));
+            logger.info({ status: 'imagen subida correctamente!', link: __dirname + '/public/Uploads/' + file.filename });
 
             //* Verificacion de contraseñas ( === )
             if (verifcontra !== contrasena) {
-                logger.warn(chalk.inverse.red('Error: Las contraseñas no son iguales'));
+                logger.warn('Error: Las contraseñas no son iguales');
                 return done(null, false);
             }
 
@@ -81,13 +80,13 @@ const iniciar = () => {
             const usuarioYaExiste = await ApiUsuarios.obtenerUnUsuario({ 'usuario': username }); // DaoUsuario.obtenerUno
 
             if (usuarioYaExiste) {
-                logger.warn(chalk.inverse.red('El usuario ya existe con el email de: ' + usuario));
+                logger.warn('El usuario ya existe con el email de: ' + usuario);
                 return done(null, false);
             } else {
 
                 //* Creacion del carrito
                 const carritoID = await ApiCarritos.crearCarrito();
-                logger.info(chalk.bord.green(carritoID))
+                logger.info(carritoID)
 
                 const nuevoUsuario = {
                     nombre: nombre,
@@ -103,7 +102,7 @@ const iniciar = () => {
                 }
                 //* Creacion del usuario
                 const usuarioCreado = await ApiUsuarios.guardarUsuariosBD(nuevoUsuario)
-                logger.info(chalk.inverse.green(`Usuario ${usuarioCreado} registrado correctamente`));
+                logger.info(`Usuario ${usuarioCreado} registrado correctamente`);
 
                 //* Envio del email al admin
                 const envioEmail = {
@@ -115,10 +114,10 @@ const iniciar = () => {
 
                 let info = transporter.sendMail(envioEmail, (error, info) => {
                     if (error) {
-                        logger.error(chalk.inverse.red("Error al enviar email: " + error));
+                        logger.error(d("Error al enviar email: " + error));
                     } else {
-                        logger.info(chalk.bord.yellow(`El email: "Nuevo registro de usuario", fue enviado con exito: ${info.messageId}`));
-                        logger.info(chalk.bord.yellow(`Vista previa a URL: ${nodemailer.getTestMessageUrl(info)}`));
+                        logger.info(`El email: "Nuevo registro de usuario", fue enviado con exito: ${info.messageId}`);
+                        logger.info(`Vista previa a URL: ${nodemailer.getTestMessageUrl(info)}`);
                     }
                 });
 

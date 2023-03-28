@@ -1,6 +1,9 @@
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~| Middleware Autenticacion |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
+import chalk from "chalk";
+import { logger } from "../Configuracion/logger.js";
+
 const datosUsuario = {};
 
 const estaAutenticado = (solicitud, respuesta, next) => {
@@ -8,8 +11,8 @@ const estaAutenticado = (solicitud, respuesta, next) => {
     datosUsuario.haberSifunca = 0;
     datosUsuario.usuario = solicitud.user;
 
-    logger.info({ datosUsuario: datosUsuario });
-    logger.info({ xSolicitud: solicitud.user });
+    logger.info(chalk.bold.green({ datosUsuario: datosUsuario }));
+    logger.info(chalk.bold.cyan({ xSolicitud: solicitud.user }));
 
     if (solicitud.isAuthenticated())
 

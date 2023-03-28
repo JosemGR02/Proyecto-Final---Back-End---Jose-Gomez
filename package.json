@@ -7,8 +7,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "start": "0x src/app.js",
-    "test": "node src/benchmark.js",
+    "start": "node src/app.js",
     "dev": "set NODE_ENV=Desarrollo && set LOGGER_MODO=DEV && nodemon src/app.js",
     "prod": "set NODE_ENV=Produccion && set LOGGER_MODO=PROD && node src/app.js",
     "cross": "cross-env set LOGGER_MODO=PROD && node src/app.js",
@@ -18,7 +17,7 @@
   "dependencies": {
     "autocannon": "^7.10.0",
     "bcryptjs": "^2.4.3",
-    "chalk": "^5.2.0",
+    "chalk": "4.1.0",
     "connect-mongo": "^4.6.0",
     "cookie-parser": "^1.4.6",
     "delay": "^5.0.0",
@@ -37,6 +36,7 @@
     "passport-local": "^1.0.0",
     "rxjs": "^7.8.0",
     "socket.io": "^4.6.1",
+    "strip-ansi": "^7.0.1",
     "sweetalert": "^2.1.2",
     "twilio": "^4.8.0",
     "winston": "^3.8.2",
