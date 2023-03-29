@@ -2,53 +2,231 @@
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~| Servicio Socket io |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 
-import chalk from 'chalk';
 import { logger } from '../../Configuracion/logger.js';
 import { ApiProductos, ApiMensajes, ApiCarritos } from '../../Api/index.js';
 import { isAdmin } from '../../Middlewares/index.js';
 import { datosUsuario } from '../../Middlewares/index.js';
 
+const IdCarritoUsuario = 0;
 
 export const eventosSocketIO = (io) => {
 
+    //? CONEXION
     io.on('connection', socket => {
 
-        logger.info(chalk.inverse.cyan(`Usuario: ${socket.id} conectado`));
+        logger.info(`Usuario: ${socket.id} conectado`);
+
         enviarTodosProds();
         enviarTodosMsjs();
         enviarPorcentajeCompresion();
         enviarDatosCarrito();
+        enviarIDCarrito();
 
+        //? producto:
         socket.on('Nuevo producto', nuevoProd => {
             nuevoProducto(socket, io, nuevoProd)
         })
 
+        //? mensaje:
         socket.on('Nuevo mensaje', nuevoMsg => {
             nuevoMensaje(socket, io, nuevoMsg)
         })
+
+        //? carrito:
+        socket.on('añadir producto', prodAguardar => {
+            añadirProducto(socket, io, prodAguardar)
+        })
+
+        socket.on('+ 1 cantidad', nuevaCantidad => {
+            cantidadMenos(socket, io, nuevaCantidad)
+        })
+
+        socket.on('- 1 cantidad', nuevaCantidad => {
+            cantidadMas(socket, io, nuevaCantidad)
+        })
+
+        socket.on('eliminar producto', prodAeliminar => {
+            eliminarProducto(socket, io, prodAeliminar)
+        })
+
+        socket.on('vaciar carrito', prodAeliminar => {
+            vaciarCarrito(socket, io, prodAeliminar)
+        })
+
+        socket.on('compra del carrito', ordenCompra => {
+            ordenDeCompra(socket, io, ordenCompra)
+        })
     })
 
+    //? DESCONEXION
     io.on('disconnection', socket => {
-        logger.info(chalk.inverse.yellow(`Usuario: ${socket.id} desconectado`));
+        logger.info(`Usuario: ${socket.id} desconectado`);
     })
 
     //¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬//
 
     //? Envio de todos los mensajes y/o productos
 
+    //? PRODUCTOS:
+
     const enviarTodosProds = async (socket) => {
         const todosProds = await ApiProductos.obtenerTodosProductos()
         io.sockets.emit('Todos los productos', todosProds)
     }
+
+    //? MENSAJES:
 
     const enviarTodosMsjs = async (socket) => {
         const todosMsjs = await ApiMensajes.obtenerTodosMensajes().limit(20)
         io.sockets.emit('Todos los mensajes', todosMsjs)
     }
 
+    //? CARRITO:
+
+    //? Envio todos datos del carrito
     const enviarDatosCarrito = async (socket) => {
-        const listProds = await ApiCarritos.obtenerListadoProds()
-        io.sockets.emit('Datos del carrito', listProds)
+        const datosCarrito = {};
+        const cantidadProdsCarrito = 0;
+
+        IdCarritoUsuario = datosUsuario.idCarrito;
+
+        //* productos en el carrito
+        const listadoProds = await ApiCarritos.obtenerListadoProds()
+
+        //* cantidad total productos
+        const carrito = await ApiCarritos.obtenerCartXid(IdCarritoUsuario)
+
+        for (const producto of carrito.productos) {
+            cantidadProdsCarrito += producto.cantidad;
+            return cantidadProdsCarrito;
+        }
+        //* valor total del carrito
+        const valorTotalCarrito = listadoProds.forEach(producto => {
+            producto.precio * producto.cantidad
+        });
+
+        datosCarrito.productos = listadoProds;
+        datosCarrito.cantidaTotal = cantidadProdsCarrito;
+        datosCarrito.precioTotal = valorTotalCarrito;
+
+        io.sockets.emit('Datos del carrito', datosCarrito)
+    }
+
+    //? Envio del id del carrito
+    const enviarIDCarrito = async (socket) => {
+        const carritoID = IdCarritoUsuario;
+        io.sockets.emit('Id del carrito', carritoID)
+    }
+
+    //? Incorporacion de un producto al carrito
+    const añadirProducto = async (socket) => {
+        const productoEncontrado = await this.ApiCarritos.obtenerProdXid(producto);
+
+        if (!productoEncontrado) {
+            logger.error('Producto no encontrado')
+        }
+        //* Guardado del producto en carrito
+        const productoGuardado = await this.ApiCarritos.añadirProducto(_id, productoEncontrado._id);
+
+        if (productoGuardado) {
+            logger.info('Se guardo el producto en el carrito con exito');
+            enviarDatosCarrito();
+        } else {
+            logger.error('Error al guardar un producto');
+        }
+        //* Envio del producto guardado
+        io.sockets.emit('Producto guardado ', productoGuardado)
+    }
+
+    //? Actualizacion de la cantidad del producto
+
+    //? disminucion producto.cantidad
+    const cantidadMas = async (socket, io, producto) => {
+        const productoEncontrado = await this.ApiCarritos.obtenerProdXid(producto);
+
+        if (!productoEncontrado) logger.error('Producto no encontrado');
+
+        productoEncontrado.cantidad++
+
+        //* Guardado del producto en carrito
+        const productoActualizado = await this.ApiCarritos.añadirProducto(_id, productoEncontrado._id);
+
+        if (productoActualizado) {
+            logger.info('Se actualizado los cambios con exito');
+            enviarDatosCarrito();
+        } else {
+            logger.error('Error al actualizar el producto');
+        }
+        //* Envio del producto actualizado
+        io.sockets.emit('Producto actualizado', productoActualizado)
+    }
+
+    //? disminucion producto.cantidad
+    const cantidadMenos = async (socket, io, producto) => {
+        const productoEncontrado = await this.ApiCarritos.obtenerProdXid(producto);
+
+        if (!productoEncontrado) logger.error('Producto no encontrado');
+
+        productoEncontrado.cantidad--
+
+        //* Guardado del producto en carrito
+        const productoActualizado = await this.ApiCarritos.añadirProducto(_id, productoEncontrado._id);
+
+        if (productoActualizado) {
+            logger.info('Se actualizado los cambios con exito');
+            enviarDatosCarrito();
+        } else {
+            logger.error('Error al actualizar el producto');
+        }
+        //* Envio del producto actualizado
+        io.sockets.emit('Producto actualizado', productoActualizado)
+    }
+
+    //? Eliminacion del producto
+    const eliminarProducto = async (socket, producto) => {
+        const productoEncontrado = await this.ApiCarritos.obtenerProdXid(producto);
+
+        const prodEliminado = await this.ApiCarritos.eliminarProdXid(productoEncontrado)
+
+        if (prodEliminado) {
+            logger.info('Se Elimino el producto con exito');
+            enviarDatosCarrito();
+        } else {
+            logger.error('Error al eliminar el producto');
+        }
+    }
+
+    //? vaciar carrito
+    const vaciarCarrito = async (socket, carritoID) => {
+        const carrito = await this.ApiCarritos.obtenerProdXid(carritoID);
+
+        carrito.productos = {};
+
+        if (carrito.productos.length) {
+            logger.info('Se vacio el carrito con exito');
+
+            let carritoVaciado = " ";
+
+            //* Envio del carrito actualizado
+            io.sockets.emit('Carrito vaciado', carritoVaciado)
+        } else {
+            logger.error('Error al vaciar el carrito');
+        }
+    }
+
+    //? Proceso de compra del carrito
+    const ordenDeCompra = async (socket) => {
+
+        const opciones = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: { _id: _id }
+        };
+
+        fetch("localhost:8080/api/carrito/compra", opciones)
+            .then(respuesta => respuesta.json())
+            .then(data => logger.info('Se realizo el proceso de compra con exito', data))
+            .catch(error => logger.error('Error al realizar el proceso de compra', error.message))
     }
 
     //¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬//
@@ -86,7 +264,7 @@ export const eventosSocketIO = (io) => {
             } else {
                 autor.tipo = sistema;
             }
-            logger.info(chalk.bold.blue({ tipoDeAutor: autor.tipo }));
+            logger.info({ tipoDeAutor: autor.tipo });
 
             //* Funcionalidad: mensaje de respuesta
             const msjRespuesta = nuevoMsj.trim();
@@ -110,15 +288,15 @@ export const eventosSocketIO = (io) => {
                         //* Guardado de mensaje en db   
                         //! mepa que no lo puedo hacer x modelos
                         const mensajeCreado = await ApiMensajes.guardarMensajesBD(nuevaRespuesta)
-                        logger.info(chalk.bold.green(`Mensaje ${mensajeCreado} creado con exito`));
+                        logger.info(`Mensaje ${mensajeCreado} creado con exito`);
 
                         //* Envio mensaje respuesta
                         autorEncontrado.emit('Whisper', nuevaRespuesta)
                     } else {
-                        logger.error(chalk.inverse.red('El usuario seleccionado no fue encontrado'));
+                        logger.error('El usuario seleccionado no fue encontrado');
                     }
                 } else {
-                    logger.error(chalk.inverse.red('Error: Ingrese el usuario y el mensaje'));
+                    logger.error('Error: Ingrese el usuario y el mensaje');
                 }
             } else {
                 //* Nuevo mensaje
@@ -134,14 +312,14 @@ export const eventosSocketIO = (io) => {
                 }
                 //* Guardado de mensaje en db
                 const mensajeCreado = await ApiMensajes.guardarMensajesBD(nuevoMensaje)
-                logger.info(chalk.bold.green(`Mensaje ${mensajeCreado} creado con exito`));
+                logger.info(`Mensaje ${mensajeCreado} creado con exito`);
 
                 //* Envio de todos los mensajes
                 const todosMsjs = await ApiMensajes.obtenerTodosMensajes()
                 io.sockets.emit('Todos los mensajes', todosMsjs)
             }
         } else {
-            logger.error(chalk.inverse.red('Error: Tenes que iniciar sesion para enviar mensajes'));
+            logger.error('Error: Tenes que iniciar sesion para enviar mensajes');
         }
     }
 }

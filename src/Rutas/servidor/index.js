@@ -10,13 +10,12 @@ const ruta = Router();
 
 
 //? datos de la configuracion del servidor
-ruta.get('/', (solicitud, respuesta) => {
+ruta.get('/info', (solicitud, respuesta) => {
     const FECHA = new Date().toLocaleDateString()
     const TTL = process.env.TTL_SESION
     const PID = process.pid
-    // respuesta.send(`Servidor express iniciado en el PUERTO: (${PUERTO}) -~- ENTREGA DESAFIO: Desplegar nuestro proyecto en la nube :) -~- PID: (${PID}) -~- FECHA: (${FECHA}) -~- Tiempo expiracion de sesion (${TTL}) `)
 
-    respuesta.render("view/servidor", { fecha: FECHA, pid: PID, puerto: PUERTO, ttl: TTL });
+    respuesta.render("view/server", { fecha: FECHA, pid: PID, puerto: PUERTO, ttl: TTL });
 })
 
 //? info .Env: desarrollo

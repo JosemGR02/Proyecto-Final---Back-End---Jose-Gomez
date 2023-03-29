@@ -11,15 +11,17 @@ class RutaProducto {
     }
 
     start() {
-        ruta.get("/", this.controladorProds.obtenerTodosProds);
-        ruta.get("/:id", this.controladorProds.obtenerProdXid);
-        ruta.get("/:categoria", this.controladorProds.obtenerProdsXcategoria);
+        ruta.get("/vista", (solicitud, respuesta) => { respuesta.render("view/prods") });
+
+        //? los puse en uno solo, obtiene el id x body
+        ruta.get("/", this.controladorProds.obtenerProductos);
+        ruta.get("/categoria/", this.controladorProds.obtenerProdsXcategoria);
 
         ruta.post("/", this.controladorProds.crearProducto);
-        ruta.put("/:id", this.controladorProds.actualizarProducto);
+        ruta.put("/actualizar/", this.controladorProds.actualizarProducto);
 
-        ruta.delete("/:id", this.controladorProds.eliminarProdXid);
-        ruta.delete("/", this.controladorProds.eliminarTodosProds);
+        //? los puse en uno solo, obtiene el id x body
+        ruta.delete("/", this.controladorProds.eliminarProductos);
 
         return ruta
     }
@@ -27,3 +29,8 @@ class RutaProducto {
 
 export { RutaProducto };
 
+
+// ruta.get("/", this.controladorProds.obtenerTodosProds);
+// ruta.get("/:id", this.controladorProds.obtenerProdXid);
+// ruta.delete("/:id", this.controladorProds.eliminarProdXid);
+// ruta.delete("/", this.controladorProds.eliminarTodosProds);

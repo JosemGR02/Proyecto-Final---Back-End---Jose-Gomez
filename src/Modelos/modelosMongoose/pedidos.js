@@ -5,12 +5,15 @@ const ColeccionPedidos = "pedidos";
 
 const EsquemaPedido = new Schema(
     {
-        // id: Schema.Types.ObjectId,
-        timestamp: { type: Date, default: Date.now },
+        id: Schema.Types.ObjectId,
         numero: { type: Number, required: true, },
+        usuario: { type: String, required: true, unique: true },
         email: { type: String, required: true, unique: true },
         estado: { type: String, required: true, default: 'generada' },
-        precioTotal: { type: Number, required: true }
+        precioTotalCompra: { type: Number, required: true },
+        telefono: { type: Number, required: true },
+        direccion: { type: String, required: true },
+        timestamp: { type: Date, default: Date.now }
     }
 );
 

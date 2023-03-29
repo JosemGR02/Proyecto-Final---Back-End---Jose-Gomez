@@ -28,36 +28,6 @@
     </div>
 </div>
 
-
-{{!--
-<div class="Mensajeria">
-    <div id="contenedorMensajes">
-
-        {{#if datosDesnormalizados.length}}
-        {{#each datosDesnormalizados}}
-
-        {{#if mensajes.length}}
-        {{#each mensajes}}
-        <p>{{ this.usuario }}</p>
-        <p>{{ this.alias }}</p>
-        <p>{{ this.avatar }}</p>
-        <p>{{ this.tipo }}</p>
-        {{#if texto.length}}
-        <p>{{ this.msj.msjForm }}</p>
-        <p>{{ this.createDate }}</p>
-        {{/each}}
-        {{/if}}
-    </div>
-
-    <div id="contenedorCompresion">
-        {{#if comprencionTotal.length}}
-        <p>% {{ comprencionTotal }}</p>
-        {{/if}}
-    </div>
-</div>
---}}
-
-
 <style>
     .titulo {
         text-align: center;
@@ -69,29 +39,3 @@
         justify-content: center;
     }
 </style>
-
-
-
-
-
-{{!--
-{{#if autor.length}}
-{{#each autor}}
-<p>{{ this.msj.idForm }}</p>
-<p>{{ this.msj.nombreForm }}</p>
-{{!-- <p>{{ this.msj.apellidoForm }}</p>
-<p>{{ this.msj.edadForm }}</p>
-<p>{{ this.msj.aliasForm }}</p>
-<p>{{ this.msj.avatarForm }}</p>
-<p>{{ this.msj.tipo }}</p>
-{{#if texto.length}}
-<p>{{ this.msj.msjForm }}</p>
-<p>{{ this.createDate }}</p>
-{{/each}}
-{{/if}}
---}}
-
-{{!-- <p>{{ this.msj.emailForm }}</p>
-<p>{{ this.msj.tipo }}</p>
-<p>{{ this.msj.msjForm }}</p>
-<p>{{ this.createDate }}</p> --}}

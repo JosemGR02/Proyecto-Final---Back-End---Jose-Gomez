@@ -1,39 +1,9 @@
-# Proyecto Final - Curso Backend - Jose Gomez
+# Proyecto Final - Curso Backend - Jose Gomez 
 
-## Tienda online de zapatillas
+## Tienda online de productos
 
-<!-- Este proyecto se creo con  [Create React App](https://github.com/facebook/create-react-app). -->
+## Implementacion de API REST de usuarios, mensajes, carrito, productos y pedidos.
 
-<!-- ## Video Proyecto
+# El proyecto fue subido a la nube con Vercel: 
 
--seleccion de productos
--seleccion de categorias
--carrito de compras
--finalizacion compra
--falto favoritos
-
-## Implementaciones
-
-https://github.com/JosemGR02/appJoseGomez.git -->
-
-<!-- ## Available Scripts
-
-In the project directory, you can run: -->
-<!-- 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information. -->
+## https://proyecto-final-back-end-jose-gomez-git-main-josemgr02.vercel.app/

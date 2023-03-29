@@ -21,7 +21,7 @@ class RutaCarrito {
 
         ruta.post('/', this.controladorCarts.crearCarrito);
         ruta.post("/:_id", this.controladorCarts.guardarProdsCarrito);
-        ruta.post('/compra/:_id', this.controladorCarts.procesarPedidoCarrito);
+        ruta.post('/compra/', this.controladorCarts.procesarPedidoCarrito);
 
         ruta.delete('/_:id', this.controladorCarts.eliminarCarritoXid);
         ruta.delete('/:_id/productos/', this.controladorCarts.eliminarProdCarrito);

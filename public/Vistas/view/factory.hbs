@@ -7,7 +7,7 @@
         <div class="nuevoProducto">
             <h3 class="titulo">Ingrese los datos correspondientes para crear un producto:</h3>
             <br>
-            <form action="/api/productos/" method="post" id="formCrearProds">
+            <form action="/api/productos/" method="post">
                 <input type="text" name="titulo" placeholder="Titulo" class="nuevoProd_input" required />
                 <input type="number" name="precio" placeholder="Precio" class="nuevoProd_input" required />
                 <input type="file" name="imagen" placeholder="Enlace imagen" class="nuevoProd_input" required />
@@ -18,11 +18,10 @@
             </form>
         </div>
         <br>
-        {{!-- Hay que ver si el id se lo paso x body || x params, :id - ${id} --}}
         <div class="productoActualizado">
             <h3 class="titulo">Ingrese los los datos para actualizar un producto:</h3>
             <br>
-            <form action="/api/productos/:id" method="put" id="formActualizarProds">
+            <form action="/api/productos/actualizar/" method="put">
                 <input type="text" name="id" placeholder="Id del producto" class="nuevoProd_input" required />
                 <input type="text" name="titulo" placeholder="Titulo" class="nuevoProd_input" required />
                 <input type="number" name="precio" placeholder="Precio" class="nuevoProd_input" required />
@@ -37,7 +36,7 @@
         <div class="producto/sEliminados">
             <h3 class="titulo">Eliminar un/todos los producto/s:</h3>
             <br>
-            <form action="/api/productos/:id" method="delete" id="formActualizarProds">
+            <form action="/api/productos/" method="delete">
                 <h5>Input Id opcional</h5>
                 <input type="text" name="id" placeholder="Id del producto" class="nuevoProd_input" required />
                 <button type="submit" id="nuevoProd_input"> Eliminar </button>
@@ -45,7 +44,7 @@
         </div>
     </div>
     <div>
-        <button class="btn btn-secondary" onclick="location.href='/api/carrito/'">
+        <button class="btn btn-secondary" onclick="location.href='/api/carrito/{{carritoID}}'">
             Ir a pagina de Carrito
         </button>
     </div>

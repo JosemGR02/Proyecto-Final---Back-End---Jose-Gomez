@@ -7,4 +7,6 @@ export { ValidacionJoiCarrito } from "./validacionCarritos.js";
 
 export { ValidacionJoiMensaje } from "./validacionMensajes.js";
 
+export { ValidacionJoiPedidos } from "./validacionMensajes.js";
+
 

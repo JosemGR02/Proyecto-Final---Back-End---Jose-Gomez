@@ -9,4 +9,6 @@ export { RutaCarrito } from './carrito/index.js';
 
 export { RutaMensaje } from './mensajeria/index.js';
 
+export { RutaPedidos } from './pedidos/index.js';
+
 

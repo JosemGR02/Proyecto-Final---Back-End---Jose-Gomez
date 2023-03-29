@@ -16,7 +16,7 @@ class ApiCarritos {
         return new ValidacionJoiCarrito(CarritosDTO(elemento))
     }
 
-    async craerCarritoBD(nuevoElemento) {
+    async crearCarritoBD(nuevoElemento) {
         ApiCarritos.ValidarDatosCarritos(nuevoElemento, true)
         await this.DaoCarritos.guardar(CarritosDTO(nuevoElemento))
     }

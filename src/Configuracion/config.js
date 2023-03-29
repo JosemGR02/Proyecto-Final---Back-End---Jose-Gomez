@@ -2,11 +2,10 @@
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~| Configuracion del Proyecto |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 import dotenv from "dotenv";
-import path from 'path';
+// import path from 'path';
 
 dotenv.config({
-    //path: path.resolve(process.cwd(), process.env.NODE_ENV + '.env')
-    // path: path.resolve(process.cwd(), '.env.' + process.env.NODE_ENV) //!!!
+    // path: path.resolve(process.cwd(), '.env.' + process.env.NODE_ENV) // !!!
 });
 
 const PRODUCTOS_ARCHIVONOMBRE = "productos";

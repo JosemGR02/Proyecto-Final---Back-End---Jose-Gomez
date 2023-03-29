@@ -6,3 +6,5 @@ export { ProductosDTO } from './productosDto.js';
 export { MensajesDTO } from './mensajesDto.js';
 
 export { UsuariosDTO } from './usuariosDto.js';
+
+export { PedidosDTO } from './pedidosDto.js';

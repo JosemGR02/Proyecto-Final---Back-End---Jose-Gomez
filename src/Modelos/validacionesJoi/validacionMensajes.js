@@ -44,7 +44,7 @@ class ValidacionJoiMensaje {
             id: requerido ? Joi.string().required() : Joi.string(),
             nombre: requerido ? Joi.string().required().length(15) : Joi.string(),
             apellido: requerido ? Joi.string().required().length(15) : Joi.string(),
-            edad: requerido ? Joi.string().required().max(3) : Joi.string(),
+            edad: requerido ? Joi.number().required().max(3) : Joi.number(),
             alias: requerido ? Joi.string().required().length(15) : Joi.string(),
             avatar: requerido ? Joi.string().required() : Joi.string()
         })

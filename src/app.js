@@ -9,7 +9,6 @@ import passport from "passport";
 import __dirname from "./dirname.js";
 import cluster from 'cluster';
 import handlebars from 'express-handlebars';
-import chalk from 'chalk';
 import { config } from './Configuracion/config.js';
 import { logger } from './Configuracion/logger.js';
 import { Server as ServidorHttp } from "http";
@@ -17,8 +16,9 @@ import { Server as ServidorIO } from "socket.io";
 import { PassportAutenticacion, eventosSocketIO } from './Servicios/index.js';
 import { hideBin } from 'yargs/helpers';
 import { INFO_UTILS } from './Utilidades/index.js';
-import { RutAutenticacion, RutaServidor, RutaProducto, RutaCarrito, RutaMensaje } from "./Rutas/index.js";
 import { RutaInexistente } from './Middlewares/index.js';
+import { RutAutenticacion, RutaServidor, RutaProducto, RutaCarrito, RutaMensaje, RutaPedidos } from "./Rutas/index.js";
+
 
 const app = express();
 
@@ -97,56 +97,59 @@ const RutaAutenticacion = new RutAutenticacion();
 const RutaCarritos = new RutaCarrito();
 const RutaProductos = new RutaProducto();
 const RutaMensajeria = new RutaMensaje();
+const RutaOrdenes = new RutaPedidos();
+
 
 //? Rutas del proyecto
-app.use('/api/', RutaServidor);
-app.use('/api/autenticacion', RutaAutenticacion.start());
+app.use('/api/', RutaAutenticacion.start());
 app.use('/api/carrito', RutaCarritos.start());
 app.use('/api/productos', RutaProductos.start());
 app.use('/api/chat', RutaMensajeria.start());
+app.use('/api/ordenes', RutaOrdenes.start());
+app.use('/api/servidor', RutaServidor);
 app.use('/api/*', RutaInexistente);
 
 
 //? Modo de ejecucion 
 if (process.env.MODO_CLUSTER == true) {  // args.modo == 'CLUSTER' 
     if (cluster.isPrimary) {
-        logger.info(chalk.inverse.green('Ejecucion en Modo Cluster'));
-        logger.info(chalk.inverse.green(`Primario corriendo con el id: ${process.pid} -- Puerto ${args.puerto}`));
+        logger.info('Ejecucion en Modo Cluster');
+        logger.info(`Primario corriendo con el id: ${process.pid} -- Puerto ${args.puerto}`);
 
         for (let i = 0; i < INFO_UTILS.procesadoresdCpus; i++) {
             cluster.fork();
         }
         cluster.on('exit', worker => {
-            logger.info(chalk.inverse.yellow(`El trabajador con el id:${worker.process.pid} ha finalizado.`, new Date().tolocaleString()));
+            logger.info(`El trabajador con el id:${worker.process.pid} ha finalizado.`, new Date().tolocaleString());
             cluster.fork();
         });
     } else {
         //? Servidor
         servidorHttp.listen(PUERTO, async () => {
-            logger.info(chalk.inverse.green(`Servidor escuchando en el puerto: ${PUERTO}, Trabajador iniciado con el id: ${process.pid}`));
+            logger.info(`Servidor escuchando en el puerto: ${PUERTO}, Trabajador iniciado con el id: ${process.pid}`);
             try {
                 await mongoose.connect(process.env.BASEDATOS_MONGO_URL, mongOptiones);
-                logger.info(chalk.inverse.cyan("Conectado a Base de Datos Mongo"));
+                logger.info("Conectado a Base de Datos Mongo");
             } catch (error) {
-                logger.error(chalk.inverse.red(`Error en conexión de Base de datos: ${error}`));
+                logger.error(`Error en conexión de Base de datos: ${error}`);
             }
         })
         servidorHttp.on("error", (error) => logger.error(`Error en servidor ${error}`));
     }
 } else {
-    logger.info(chalk.inverse.green('Ejecucion en Modo Fork'))
+    logger.info('Ejecucion en Modo Fork')
 
     //? Servidor
     servidorHttp.listen(PUERTO, async () => {
         logger.info(`Servidor escuchando en el puerto: ${PUERTO}, Trabajador iniciado con el id: ${process.pid}`);
         try {
             await mongoose.connect(process.env.BASEDATOS_MONGO_URL, mongOptiones);
-            logger.info(chalk.inverse.cyan("Conectado a Base de Datos Mongo"));
+            logger.info("Conectado a Base de Datos Mongo");
         } catch (error) {
-            logger.error(chalk.inverse.red(`Error en conexión de Base de datos: ${error}`));
+            logger.error(`Error en conexión de Base de datos: ${error}`);
         }
     })
-    servidorHttp.on("error", (error) => logger.error(chalk.inverse.red(`Error en servidor ${error}`)));
+    servidorHttp.on("error", (error) => logger.error(`Error en servidor ${error}`));
 }
 
 export { app };

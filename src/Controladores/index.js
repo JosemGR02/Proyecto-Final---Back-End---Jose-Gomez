@@ -7,3 +7,5 @@ export { ControladorAutenticacion } from "./controladorAutenticacion/index.js";
 
 export { ControladorMensajes } from "./controladorMensajes/index.js";
 
+export { ControladorPedidos } from "./controladorPedidos/index.js";
+

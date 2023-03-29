@@ -1,13 +1,10 @@
 
-/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~| Cliente JS - Frond |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~| JS - Productos y Mensajes |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 
-// import { datosDesnormalizados, comprencionTotal } from "../Desnormalizacion/index.js";
 import { logger } from '../../src/Configuracion/logger.js';
-import { apiCarritos } from '../../src/Api/index.js';
+// import { datosDesnormalizados, comprencionTotal } from "../Desnormalizacion/index.js";
 
-
-let contador = 0;
 
 const socket = io.connect();
 
@@ -23,13 +20,6 @@ const mensajesForm = document.getElementById('formularioMensajes')
 const contenedorProds = document.getElementById('contenedorProductos')
 const contenedorChat = document.getElementById('contenedorMensajes')
 const contenedorXcentaje = document.getElementById('contenedorCompresion')
-const contenedorCart = document.getElementById('contenedorCarrito')
-
-
-//? Contador Carrito
-const botones = document.querySelector('.boton')
-const Valor = document.querySelector('#contador')
-
 
 //¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬//
 
@@ -54,26 +44,6 @@ mensajesForm.addEventListener('submit', (evento) => {
     logger.info(valoresFormulario);
     mensajesForm.reset();
     socket.emit('nuevo mensaje', valoresFormulario);
-})
-
-//? Listeners Carritos
-botones.forEach(boton => {
-    boton.addEventListener('click', (evento) => {
-        const elementos = evento.currentTarget.classList;
-
-        if (elementos.contains('disminuir')) {
-            contador--;
-        }
-
-        if (elementos.contains('aumentar')) {
-            contador++;
-        }
-        Valor.textContent = contador;
-
-        if (Valor.value < 0) {
-            Valor.value = 1;
-        }
-    })
 })
 
 //¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬//
@@ -106,12 +76,6 @@ socket.on('porcentaje compresion', xcentaje => {
     comprencionTotal = xcentaje
     limpiarChat()
     renderXcentajeComprension(xcentaje)
-})
-
-//? Eventos carrito
-socket.on('Datos del carrito', listProds => {
-    prodsEnCarrito = listProds
-    CarritosRenderizado(listProds)
 })
 
 //¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬//
@@ -161,19 +125,4 @@ const renderXcentajeComprension = async (comprencionTotal) => {
 //     contenedorChat.innerHTML = html
 // }
 
-//? Render carrito
-const limpiarCart = () => {
-    contenedorCart.innerHTML = ""
-}
-
-const CarritosRenderizado = async (prodsEnCarrito) => {
-    let respuesta = await fetch('/public/Assets/Vistas/Template/carritoTemplate.hbs');
-    const template = await respuesta.text()
-    const templateCompilado = Handlebars.compile(template)
-    const html = templateCompilado({ prodsEnCarrito })
-    contenedorCart.innerHTML = html
-}
-
 //¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬//
-
-

@@ -7,3 +7,5 @@ export { ApiUsuarios } from "./apiUsuarios.js";
 
 export { ApiMensajes } from "./apiMensajes.js";
 
+export { ApiPedidos } from "./apiPedidos.js";
+

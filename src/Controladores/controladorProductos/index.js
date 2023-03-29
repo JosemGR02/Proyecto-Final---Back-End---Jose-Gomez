@@ -13,18 +13,42 @@ class ControladorProductos {
         this.apiProds = new ApiProductos()
     }
 
+    obtenerProductos = async (solicitud, respuesta) => {
+        try {
+            const { id } = solicitud.body;
+
+            if (id) {
+                //* Se obtiene un producto por id
+                const producto = await this.apiProds.obtenerProductosXid(id);
+
+                if (!producto) return logger.error({ error: ERRORES_UTILS.MESSAGES.ERROR_PRODUCTO });
+
+                respuesta.render("view/prods", { productoXid: producto });
+            } else {
+                const productos = await this.apiProds.obtenerTodosProductos();
+
+                //* Se obtienen todos los productos
+                if (!productos) return logger.error({ error: ERRORES_UTILS.MESSAGES.ERROR_PRODUCTO });
+
+                respuesta.render("view/prods", { todosProductos: productos });
+            }
+        } catch (error) {
+            respuesta.render("view/error-forAll", { infoError: error, lugarError: 'PRODUCTOS' });
+            logger.error(`${error}, Error al obtener los productos solicitados`);
+        }
+    };
+
     obtenerTodosProds = async (solicitud, respuesta) => {
         try {
             const productos = await this.apiProds.obtenerTodosProductos();
 
             //* Se obtienen todos los productos
-            if (!productos) return logger.error(chalk.bord.red({ error: ERRORES_UTILS.MESSAGES.ERROR_PRODUCTO }));
+            if (!productos) return logger.error({ error: ERRORES_UTILS.MESSAGES.ERROR_PRODUCTO });
 
-            // respuesta.send(producto);
             respuesta.render("view/prods", { todosProductos: productos });
         } catch (error) {
             respuesta.render("view/error-forAll", { infoError: error, lugarError: 'PRODUCTOS' });
-            logger.error(chalk.bord.red(`${error}, Error al obtener los productos solicitados`));
+            logger.error(`${error}, Error al obtener los productos solicitados`);
         }
     };
 
@@ -36,35 +60,36 @@ class ControladorProductos {
             //* Se obtiene un producto por id
             const producto = await this.apiProds.obtenerProductosXid(id);
 
-            // respuesta.send(producto);
+            if (!producto) return logger.error({ error: ERRORES_UTILS.MESSAGES.ERROR_PRODUCTO });
+
             respuesta.render("view/prods", { productoXid: producto });
 
         } catch (error) {
             respuesta.render("view/error-forAll", { infoError: error, lugarError: 'PRODUCTOS' })
-            logger.error(chalk.bord.red(`${error}, Error al obtener el producto solicitado`));
+            logger.error(`${error}, Error al obtener el producto solicitado`);
         }
     };
 
     obtenerProdsXcategoria = async (solicitud, respuesta) => {
         try {
-            const { categoria } = solicitud.params;
+            const { categoria } = solicitud.body;
 
             //* Se obtienen los productos x su categoria
             const productos = await this.apiProds.obtenerProductosXcategoria(categoria);
 
-            // respuesta.send(productos);
             respuesta.render("view/prods", { prodsXcategoria: productos })
 
         } catch (error) {
             respuesta.render("view/error-forAll", { infoError: error, lugarError: 'PRODUCTOS' })
-            logger.error(chalk.bord.red(`${error}, Error al obtener el producto solicitado`));
+            logger.error(`${error}, Error al obtener el producto solicitado`);
         }
     };
 
 
     actualizarProducto = async (solicitud, respuesta) => {
         try {
-            const { id } = solicitud.params;
+            // const { id } = solicitud.params;
+            const { id } = solicitud.body;
 
             const { titulo, descripcion, codigo, stock, precio, imagen } = solicitud.body;
 
@@ -72,32 +97,30 @@ class ControladorProductos {
             const productoValidado = await JOI_VALIDADOR.productoJoi.validateAsync({
                 titulo, descripcion, codigo, imagen, precio, stock, timestamp: FECHA_UTILS.getTimestamp(),
             });
-            logger.info(chalk.bord.blue({ productoValidado }));
+            logger.info({ productoValidado });
 
             //* Actualizacion del producto
             const productoActualizado = await this.apiProds.actualizarProductosXid({ id, productoValidado })
 
-            logger.info(chalk.bord.magenta({ productoActualizado }));
+            logger.info({ productoActualizado });
 
             respuesta.send(`${productoActualizado}, Producto actualizado con exito`)
 
         } catch (error) {
             respuesta.render("view/error-forAll", { infoError: error, lugarError: 'PRODUCTOS' });
-            logger.error(chalk.bord.red(`${error}, Error al actualizar el producto solicitado`));
+            logger.error(`${error}, Error al actualizar el producto solicitado`);
         }
     }
 
 
     crearProducto = async (solicitud, respuesta) => {
         try {
-            const { titulo, descripcion, codigo, precio, stock } = solicitud.body; //imagen
-
-            //! para probar con postman agregar imagen "solicitud.body" y comentar subida file
+            const { titulo, descripcion, codigo, precio, stock } = solicitud.body;
 
             //* Subida de imagen del producto
             const file = solicitud.file;
 
-            logger.info(chalk.bord.cyan({ status: 'imagen subida correctamente!', link: __dirname + '/public/Uploads/productos' + file.filename }));
+            logger.info({ status: 'imagen subida correctamente!', link: __dirname + '/public/Uploads/productos' + file.filename });
 
             const imagen = file.filename;
 
@@ -106,7 +129,7 @@ class ControladorProductos {
                 titulo, descripcion, codigo, imagen, precio, stock,
                 timestamp: FECHA_UTILS.getTimestamp(),
             });
-            logger.info(chalk.bord.green({ nuevoProducto }))
+            logger.info({ nuevoProducto })
 
             //* Creacion del producto
             const productoCreado = await this.apiProds.guardarProductosBD(nuevoProducto);
@@ -115,8 +138,29 @@ class ControladorProductos {
 
         } catch (error) {
             respuesta.render("view/error-forAll", { infoError: error, lugarError: 'PRODUCTOS' });
-            logger.error(chalk.bord.red(`${error}, Error al crear el producto solicitado`));
+            logger.error(`${error}, Error al crear el producto solicitado`);
             await LOGGER_UTILS.guardarLOG(error);
+        }
+    };
+
+
+    eliminarProductos = async (solicitud, respuesta) => {
+        try {
+            const { id } = solicitud.body;
+
+            if (id) {
+                //* Eliminacion de un producto
+                const productoEliminado = await await this.apiProds.eliminarProductosXid(id);
+                respuesta.send({ success: true, eliminado: productoEliminado });
+            }
+            else {
+                //* Eliminacion todos los productos
+                await this.apiProds.eliminarTodosProductos();
+                respuesta.send({ success: true });
+            }
+        } catch (error) {
+            respuesta.render("view/error-forAll", { infoError: error, lugarError: 'PRODUCTOS' });
+            logger.error(`${error}, Error al eliminar el producto solicitado`);
         }
     };
 
@@ -131,7 +175,7 @@ class ControladorProductos {
             respuesta.send({ success: true, eliminado: productoEliminado });
         } catch (error) {
             respuesta.render("view/error-forAll", { infoError: error, lugarError: 'PRODUCTOS' });
-            logger.error(chalk.bord.red(`${error}, Error al eliminar el producto solicitado`));
+            logger.error(`${error}, Error al eliminar el producto solicitado`);
         }
     };
 
@@ -144,7 +188,7 @@ class ControladorProductos {
             respuesta.send({ success: true, mensaje: 'Productos eliminados con exito' });
         } catch (error) {
             respuesta.render("view/error-forAll", { infoError: error, lugarError: 'PRODUCTOS' });
-            logger.error(chalk.bord.red(`${error}, Error al eliminar los productos solicitados`));
+            logger.error(`${error}, Error al eliminar los productos solicitados`);
         }
     };
 }

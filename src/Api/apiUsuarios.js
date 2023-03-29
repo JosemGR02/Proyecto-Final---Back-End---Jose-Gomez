@@ -24,7 +24,8 @@ class ApiUsuarios {
 
     async obtenerUnUsuario(elemento) {
         const respuesta = await this.DaoUsuarios.obtenerUno(elemento)
-        const usuario = new ValidacionJoiUsuario(UsuariosDTO(respuesta))
+        const modelo = UsuariosDTO(respuesta)
+        const usuario = new ValidacionJoiUsuario(modelo)
         return usuario
     }
 
