@@ -21,6 +21,7 @@ export const eventosSocketIO = (io) => {
         enviarPorcentajeCompresion();
         enviarDatosCarrito();
         enviarIDCarrito();
+        enviarTodosOrders();
 
         //? producto:
         socket.on('Nuevo producto', nuevoProd => {
@@ -65,7 +66,7 @@ export const eventosSocketIO = (io) => {
 
     //¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬//
 
-    //? Envio de todos los mensajes y/o productos
+    //? Envio de todos los mensajes, productos y pedidos
 
     //? PRODUCTOS:
 
@@ -80,6 +81,15 @@ export const eventosSocketIO = (io) => {
         const todosMsjs = await ApiMensajes.obtenerTodosMensajes().limit(20)
         io.sockets.emit('Todos los mensajes', todosMsjs)
     }
+
+    //? PEDIDOS:
+
+    const enviarTodosOrders = async (socket) => {
+        const todosOrders = await ApiPedidos.obtenerTodosPedidos()
+        io.sockets.emit('Todos los pedidos', todosOrders)
+    }
+
+    //? Funcionalidades carrito
 
     //? CARRITO:
 

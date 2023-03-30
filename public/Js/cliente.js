@@ -1,5 +1,5 @@
 
-/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~| JS - Productos y Mensajes |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~| JS - Productos, Mensajes y Pedidos |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 
 import { logger } from '../../src/Configuracion/logger.js';
@@ -20,6 +20,7 @@ const mensajesForm = document.getElementById('formularioMensajes')
 const contenedorProds = document.getElementById('contenedorProductos')
 const contenedorChat = document.getElementById('contenedorMensajes')
 const contenedorXcentaje = document.getElementById('contenedorCompresion')
+const contenedorOrders = document.getElementById('contenedorPedidos')
 
 //¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬//
 
@@ -45,7 +46,6 @@ mensajesForm.addEventListener('submit', (evento) => {
     mensajesForm.reset();
     socket.emit('nuevo mensaje', valoresFormulario);
 })
-
 //¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬//
 
 //? EVENTOS :
@@ -78,6 +78,13 @@ socket.on('porcentaje compresion', xcentaje => {
     renderXcentajeComprension(xcentaje)
 })
 
+
+//? Eventos Pedidos
+socket.on('Todos los pedidos', todosOrders => {
+    pedidos = todosOrders
+    limpiarOrders()
+    pedidosRenderizados(todosOrders)
+})
 //¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬//
 
 //? RENDERS :
@@ -125,4 +132,17 @@ const renderXcentajeComprension = async (comprencionTotal) => {
 //     contenedorChat.innerHTML = html
 // }
 
+//? Render Pedidos
+const limpiarOrders = () => {
+    contenedorOrders.innerHTML = ""
+}
+
+const pedidosRenderizados = async (pedidos) => {
+    let respuesta = await fetch('/public/Assets/Vistas/Templates/pedidosTemplate.hbs');
+    const template = await respuesta.text()
+    const templateCompilado = Handlebars.compile(template)
+    const html = templateCompilado({ pedidos })
+    contenedorOrders.innerHTML = html
+    contenedorOrders.scrollTop = contenedorOrders.scrollHeight;   //hay que ver si funca
+}
 //¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬//

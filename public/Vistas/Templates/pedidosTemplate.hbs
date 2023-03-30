@@ -1,0 +1,41 @@
+<div>
+    <h2 class="titulo">Listado de Pedidos</h2>
+    <div class="col-lg-4 mb-4 aling-items-stretch">
+        <div class="card h-100">
+            {{#if pedidos.length}}
+            {{#each pedidos}}
+            <div>
+                <h3>Datos de la Orden:</h3>
+                <p>Id: <span>{{pedidos.id}}</span></p>
+                <p>Numero: <span>{{pedidos.numero}}</span></p>
+                <p>Estado: <span>{{pedidos.estado}}</span></p>
+                <p>Precio total de la compra: <span>{{pedidos.precioTotalCompra}}</span></p>
+                <p>Id del carrito: <span>{{pedidos.idCarrito}}</span></p>
+            </div>
+            <div>
+                <h3>Datos del cliente:</h3>
+                <p>Nombre: <span>{{pedidos.usuario}}</span></p>
+                <p>Email: <span>{{pedidos.email}}</span></p>
+                <p>Telefono: <span>{{pedidos.telefono}}</span></p>
+                <p>Direccion: <span>{{pedidos.direccion}}</span></p>
+            </div>
+            {{/each}}
+            {{/if}}
+            {{#unless pedidos}}
+            <h3 class="titulo">¡No se encontro ningun pedido de compra!</h3>
+            {{/unless}}
+        </div>
+    </div>
+</div>
+
+<style>
+    .titulo {
+        text-align: center;
+    }
+
+    .Mensajeria {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>

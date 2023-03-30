@@ -1,26 +1,7 @@
 <div>
     <h2> PAGINA PEDIDOS DE COMPRA </h2>
     <br>
-    <div>
-        <div>
-            <h3>Datos de la Orden:</h3>
-            <ul>
-                <li>Id: <span>{{pedidos.id}}</span></li>
-                <li>Numero: <span>{{pedidos.numero}}</span></li>
-                <li>Estado: <span>{{pedidos.estado}}</span></li>
-                <li>Precio total de la compra: <span>{{pedidos.precioTotalCompra}}</span></li>
-                <li>Id del carrito: <span>{{pedidos.idCarrito}}</span></li>
-            </ul>
-            <br>
-            <h3>Datos del cliente:</h3>
-            <ul>
-                <li>Nombre: <span>{{pedidos.usuario}}</span></li>
-                <li>Email: <span>{{pedidos.email}}</span></li>
-                <li>Telefono: <span>{{pedidos.telefono}}</span></li>
-                <li>Direccion: <span>{{pedidos.direccion}}</span></li>
-            </ul>
-        </div>
-    </div>
+    <div id="contenedorPedidos"></div>
     <br>
     <div>
         <button class="btn btn-danger" onclick="location.href='/api/autenticacion/logout'">Cerrar Sesion</button>
